@@ -38,6 +38,8 @@ solve(
 )
 ```
 
+For a complete mixed-integer example using JuMP and HiGHS, see [Examples](@ref).
+
 ## Package Layout
 
 - Core algorithm in `src/core.jl`
