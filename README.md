@@ -1,17 +1,17 @@
 # BnB.jl
 
 <p align="center">
-  <a href="https://luiz-lorena.github.io/BnB.jl/">
-    <img alt="Documentation" src="https://img.shields.io/badge/docs-GitHub%20Pages-blue?style=flat-square">
-  </a>
-</p>
-
-<p align="center">
   <picture>
     <source media="(prefers-color-scheme: light)" srcset="assets/logo-with-text.svg">
     <source media="(prefers-color-scheme: dark)" srcset="assets/logo-dark-with-text.svg">
     <img alt="JuMP.jl logo." src="assets/logo-with-text-background.svg">
   </picture>
+</p>
+
+<p align="center">
+  <a href="https://luiz-lorena.github.io/BnB.jl/">
+    <img alt="Documentation" src="https://img.shields.io/badge/docs-GitHub%20Pages-blue?style=flat-square">
+  </a>
 </p>
 
 ---
@@ -35,30 +35,3 @@ Install the package from GitHub with Julia's package manager:
 using Pkg
 Pkg.add(url="https://github.com/Luiz-Lorena/BnB.jl")
 ```
-
-## Documentation
-
-This package uses `Documenter.jl`.
-
-Build docs locally from the repository root with:
-
-```julia
-julia --project=docs -e 'using Pkg; Pkg.develop(path="."); Pkg.instantiate()'
-julia --project=docs docs/make.jl
-```
-
-## Testing
-
-Run the package tests from the repository root with:
-
-```julia
-julia --project=. -e 'using Pkg; Pkg.test()'
-```
-
-To run a knapsack-style integration test with JuMP and HiGHS (same pattern as your example), use:
-
-```julia
-julia --project=. -e 'using Pkg; Pkg.test()'
-```
-
-The BKP integration test is in [test/bkp_test.jl](test/bkp_test.jl).
