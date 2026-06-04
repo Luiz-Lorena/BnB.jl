@@ -1,10 +1,12 @@
 # BnB.jl
 
-<picture>
-  <source media="(prefers-color-scheme: light)" srcset="assets/logo-with-text.svg">
-  <source media="(prefers-color-scheme: dark)" srcset="assets/logo-dark-with-text.svg">
-  <img alt="JuMP.jl logo." src="assets/logo-with-text-background.svg">
-</picture>
+<p align="center">
+  <picture>
+    <source media="(prefers-color-scheme: light)" srcset="assets/logo-with-text.svg">
+    <source media="(prefers-color-scheme: dark)" srcset="assets/logo-dark-with-text.svg">
+    <img alt="JuMP.jl logo." src="assets/logo-with-text-background.svg">
+  </picture>
+</p>
 
 ---
 
