@@ -19,30 +19,6 @@ The package is organized around a small core API:
 
 Optional tree visualization is available through `GraphMakie` and `CairoMakie` when `print_tree = true`.
 
-## Install Julia
-
-You need Julia installed before you can use `BnB.jl`.
-
-- Windows: install Julia with `winget` or the official installer from [julialang.org](https://julialang.org/downloads/).
-
-```powershell
-winget install --id JuliaLang.Julia -e
-```
-
-- macOS: install Julia with Homebrew or the official `.dmg` from [julialang.org](https://julialang.org/downloads/).
-
-```bash
-brew install julia
-```
-
-- Linux: download the official tarball from [julialang.org](https://julialang.org/downloads/), extract it, and add `julia` to your `PATH`. On many distributions you can also use your package manager, but the official binaries are usually the simplest way to get a current version.
-
-After installation, confirm it works:
-
-```julia
-julia --version
-```
-
 ## Installation
 
 Install the package from GitHub with Julia's package manager:
@@ -50,13 +26,6 @@ Install the package from GitHub with Julia's package manager:
 ```julia
 using Pkg
 Pkg.add(url="https://github.com/luizhlorena/BnB.jl")
-```
-
-If you want to work on the package locally, develop it from a cloned checkout:
-
-```julia
-using Pkg
-Pkg.develop(path="/path/to/BnB.jl")
 ```
 
 ## Documentation
