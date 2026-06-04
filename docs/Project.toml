@@ -1,0 +1,6 @@
+[deps]
+BnB = "92b0845d-0f24-4363-b99d-6b0a3b045c53"
+Documenter = "e30172f5-a6a5-5a46-863b-614d45cd2de4"
+
+[compat]
+Documenter = "1"

@@ -1,0 +1,26 @@
+name = "BnB"
+uuid = "92b0845d-0f24-4363-b99d-6b0a3b045c53"
+version = "0.1.0"
+authors = ["Luiz H N Lorena <luiz-lorena@hotmail.com>"]
+
+[deps]
+CairoMakie = "13f3f980-e62b-5c42-98c6-ff1f3baf88f0"
+Colors = "5ae59095-9a9b-59fe-a467-6f913c188581"
+DataStructures = "864edb3b-99cc-5e75-8d2d-829cb0a9cfe8"
+GraphMakie = "1ecd5474-83a3-4783-bb4f-06765db800d2"
+Graphs = "86223c79-3864-5bf0-83f7-82e725a168b6"
+NetworkLayout = "46757867-2c16-5918-afeb-47bfcb05e46a"
+
+[compat]
+CairoMakie = "0.15.11"
+Colors = "0.13.1"
+GraphMakie = "0.6.3"
+NetworkLayout = "0.4.10"
+
+[extras]
+HiGHS = "87dc4568-4c63-4d18-b0c0-bb2238e4078b"
+JuMP = "4076af6c-e467-56ae-b986-b466b2749572"
+Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
+
+[targets]
+test = ["Test", "JuMP", "HiGHS"]
