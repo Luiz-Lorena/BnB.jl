@@ -27,7 +27,7 @@ Install the package from GitHub with Julia's package manager:
 
 ```julia
 using Pkg
-Pkg.add(url="https://github.com/luizhlorena/BnB.jl")
+Pkg.add(url="https://github.com/Luiz-Lorena/BnB.jl")
 ```
 
 ## Documentation

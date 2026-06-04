@@ -15,6 +15,6 @@ makedocs(
 )
 
 deploydocs(
-    repo="github.com/luizhlorena/BnB.jl.git",
+    repo="github.com/Luiz-Lorena/BnB.jl.git",
     devbranch="main",
 )

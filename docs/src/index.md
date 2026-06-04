@@ -6,7 +6,7 @@
 
 ```julia
 using Pkg
-Pkg.add(url="https://github.com/luizhlorena/BnB.jl")
+Pkg.add(url="https://github.com/Luiz-Lorena/BnB.jl")
 ```
 
 ## Quick Start
