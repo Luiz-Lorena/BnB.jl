@@ -1,6 +1,12 @@
 # BnB.jl
 
 <p align="center">
+  <a href="https://luiz-lorena.github.io/BnB.jl/">
+    <img alt="Documentation" src="https://img.shields.io/badge/docs-GitHub%20Pages-blue?style=flat-square">
+  </a>
+</p>
+
+<p align="center">
   <picture>
     <source media="(prefers-color-scheme: light)" srcset="assets/logo-with-text.svg">
     <source media="(prefers-color-scheme: dark)" srcset="assets/logo-dark-with-text.svg">
