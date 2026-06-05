@@ -135,7 +135,6 @@ function solve(data::BnBData;
     
     # Display the BnB tree
     if print_tree
-        _ensure_visualization_loaded!()
         plot_bnb_tree(bnb)
     end
 
