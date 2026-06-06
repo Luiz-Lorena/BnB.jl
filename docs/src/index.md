@@ -1,4 +1,9 @@
-# BnB.jl
+```@raw html
+<img class="display-light-only" src="assets/logo-with-text.svg" alt="BnB logo"/>
+<img class="display-dark-only" src="assets/logo-dark-with-text.svg" alt="BnB logo"/>
+```
+
+# Introduction
 
 `BnB.jl` provides a customizable branch-and-bound framework for binary decision problems.
 
@@ -16,19 +21,19 @@ The solver is generic: you provide problem-specific callbacks.
 ```julia
 using BnB
 
-struct DummyData <: BnBData end
+struct MyProblemData <: BnBData end
 
-dummy_incumbent(::DummyData) = (nothing, 1.0)
-dummy_relaxation(::BnBNode, ::DummyData) = (Dict(:x => 1.0), 1.0)
-dummy_prune(::BnBCore, ::BnBNode) = PrunedByIntegrality
-dummy_branch_selection(::BnBNode) = nothing
-dummy_is_optimal_node(bnb::BnBCore, node::BnBNode) = node.relaxation == bnb.incumbent_objective
-dummy_print_node(::BnBNode) = nothing
+custom_incumbent(data::MyProblemData) = (nothing, 1.0)
+custom_relaxation(node::BnBNode, data::MyProblemData) = (Dict(:x => 1.0), 1.0)
+custom_prune(::BnBCore, node::BnBNode) = PrunedByIntegrality
+custom_branch_selection(node::BnBNode) = nothing
+custom_is_optimal_node(bnb::BnBCore, node::BnBNode) = node.relaxation == bnb.incumbent_objective
+custom_print_node(::BnBNode) = nothing
 
 solve(
-    DummyData();
+    MyProblemData();
     print_tree=false,
-    sense=Max,
+    is_maximization=true,
     custom_incumbent=dummy_incumbent,
     custom_relaxation=dummy_relaxation,
     custom_prune=dummy_prune,
