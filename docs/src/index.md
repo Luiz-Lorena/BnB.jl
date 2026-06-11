@@ -1,6 +1,12 @@
 ```@raw html
-<img class="display-dark-only" src="assets/logo-dark-with-text.svg" alt="BnB logo"/>
-<img class="display-light-only" src="assets/logo-with-text.svg" alt="BnB logo"/>
+<div style="text-align: center;">
+    <img class="display-dark-only"
+         src="assets/logo-dark-with-text.svg"
+         alt="BnB logo"/>
+    <img class="display-light-only"
+         src="assets/logo-with-text.svg"
+         alt="BnB logo"/>
+</div>
 ```
 
 # Introduction
