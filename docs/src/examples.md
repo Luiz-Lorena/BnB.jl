@@ -371,15 +371,11 @@ solution = BnB.solve(data,
 
 The following example solves the Maximum Independent Set Problem (MISP) using Linear Programming relaxation in each node of the BnB tree.
 
-```@raw html
-<img src="assets/MISP.png" alt="MISP instance"/>
-```
-
 ### What this example does
 
 The MISP instance is a graph: 
 
-$$
+```math
 A = \begin{bmatrix}
 0 & 1 & 0 & 0 & 0 & 1 & 0 & 1 & 1 & 0 & 0 & 1 \\
 1 & 0 & 1 & 0 & 0 & 1 & 1 & 0 & 1 & 0 & 0 & 0 \\
@@ -394,7 +390,9 @@ A = \begin{bmatrix}
 0 & 0 & 0 & 1 & 1 & 0 & 0 & 1 & 0 & 1 & 0 & 1 \\
 1 & 0 & 0 & 0 & 1 & 1 & 0 & 1 & 0 & 0 & 1 & 0
 \end{bmatrix}
-$$
+```
+
+![MISP instance](assets/MISP.png)
 
 The goal is to find the largest possible independent set (maximum cardinality) in the graph.
 
