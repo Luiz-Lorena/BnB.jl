@@ -182,30 +182,8 @@ The following example solves the Travelling Salesman Problem (TSP) using Linear 
 
 The TSP instance file is composed by 7 cities:
 
-<!-- $$
-coordinates = \begin{bmatrix}
--23.2018 & -45.9000 \\
--23.1980 & -45.8925 \\
--23.1985 & -45.9010 \\
--23.2040 & -45.8950 \\
--23.2030 & -45.9025 \\
--23.2039 & -45.8995 \\
--23.1995 & -45.8998
-\end{bmatrix}
-$$ -->
-
-<!-- ```math
-\begin{aligned}
-& \min & 12x + 20y \\
-& \;\;\text{s.t.} & 6x + 8y \geq 100 \\
-& & 7x + 12y \geq 120 \\
-& & x \geq 0 \\
-& & y \in [0, 3] \\
-\end{aligned}
-``` -->
-
 ```math
-coordinates = \begin{bmatrix}
+coordinates = \begin{matrix}
 -23.2018 & -45.9000 \\
 -23.1980 & -45.8925 \\
 -23.1985 & -45.9010 \\
@@ -213,7 +191,7 @@ coordinates = \begin{bmatrix}
 -23.2030 & -45.9025 \\
 -23.2039 & -45.8995 \\
 -23.1995 & -45.8998
-\end{bmatrix}
+\end{matrix}
 ```
 
 ```@raw html
