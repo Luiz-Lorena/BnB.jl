@@ -183,7 +183,7 @@ The following example solves the Travelling Salesman Problem (TSP) using Linear 
 The TSP instance file is composed by 7 cities:
 
 ```math
-coordinates = \begin{matrix}
+coordinates = \begin{bmatrix}
 -23.2018 & -45.9000 \\
 -23.1980 & -45.8925 \\
 -23.1985 & -45.9010 \\
@@ -191,12 +191,10 @@ coordinates = \begin{matrix}
 -23.2030 & -45.9025 \\
 -23.2039 & -45.8995 \\
 -23.1995 & -45.8998
-\end{matrix}
+\end{bmatrix}
 ```
 
-```@raw html
-<img src="assets/TSP.png" alt="TSP instance"/>
-```
+![TSP instance](assets/TSP.png)
 
 The goal is to find the shortest possible route that allows a traveler to visit a set of cities exactly once and return to the starting city.
 
