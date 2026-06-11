@@ -7,7 +7,10 @@ makedocs(
     modules=[BnB],
     sitename="BnB.jl",
     authors="Luiz H N Lorena",
-    format=Documenter.HTML(prettyurls=get(ENV, "CI", "false") == "true"),
+    format=Documenter.HTML(
+        prettyurls=get(ENV, "CI", "false") == "true",
+        assets=["assets/custom.css"]
+    ),
     pages=[
         "Home" => "index.md",
         "Examples" => "examples.md",
