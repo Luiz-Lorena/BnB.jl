@@ -9,7 +9,11 @@ include("visualization.jl")
 
 export
     BnBData,
+    BnBBranchConstraint,
+    BnBColumn,
+    BnBPlotOptions,
     BnBNodeStatus,
+    BnBSolution,
     BnBNode,
     BnBCore,
     solve

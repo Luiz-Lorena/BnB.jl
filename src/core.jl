@@ -1,16 +1,33 @@
-# Adds a node to the active frontier according to the selected search strategy.
-function push_active!(bnb::BnBCore, node::BnBNode, bound_hint::Union{Nothing, Float64} = nothing)
+"""
+    push_active!(bnb::BnBCore, node::BnBNode)
+
+# Arguments
+- `bnb`: the branch-and-bound core structure containing the active frontier and search strategy.
+- `node`: the `BnBNode` to be added to the active frontier.
+
+Adds a node to the active frontier according to the selected search strategy.
+"""
+function push_active!(bnb::BnBCore, node::BnBNode)
     if bnb.search_strategy == :best_bound
         # Best-bound for Max picks larger bounds first; for Min picks smaller first.
-        bound = isnothing(bound_hint) ? node.incumbent : bound_hint
-        priority = bnb.is_maximization ? -bound : bound
+        priority = bnb.is_maximization ? -node.relaxation.objective : node.relaxation.objective
         enqueue!(bnb.active_list, node, priority)
     else
+        # DFS just pushes to the stack (LIFO).
         push!(bnb.active_list, node)
     end
 end
 
-# Pops a node from the active frontier according to the selected search strategy.
+"""
+    pop_active!(bnb::BnBCore)
+
+Pops a node from the active frontier according to the selected search strategy.
+
+# Arguments
+- `bnb`: the branch-and-bound core structure containing the active frontier and search strategy.
+
+Returns the selected `BnBNode`.
+"""
 function pop_active!(bnb::BnBCore)
     if bnb.search_strategy == :best_bound
         return dequeue!(bnb.active_list)
@@ -18,31 +35,66 @@ function pop_active!(bnb::BnBCore)
     return pop!(bnb.active_list)
 end
 
-# Function to initialize the BnB structure with the root node
-function initialize(incumbent_solution, incumbent_objective, is_maximization::Bool, search_strategy::Symbol)
+"""
+    initialize(data::BnBData, is_maximization::Bool, search_strategy::Symbol, 
+custom_incumbent::Function, custom_relaxation::Function)
+
+Initializes the branch-and-bound structure with the root node.
+
+# Arguments
+- `data`: user-defined problem data.
+- `is_maximization`: if `true`, the problem is a maximization problem.
+- `search_strategy`: strategy for selecting the next node to explore (DFS or Best Bound).
+- `custom_incumbent`: user-defined function that returns the initial incumbent solution and objective.
+- `custom_relaxation`: user-defined function that solves the relaxation for a node and returns the solution and objective.
+
+Returns the initialized `BnBCore` object.
+"""
+function initialize(data::BnBData, 
+                    is_maximization::Bool, 
+                    search_strategy::Symbol, 
+                    custom_incumbent::Function, 
+                    custom_relaxation::Function)
+    # Get initial incumbent solution and objective
+    incumbent = custom_incumbent(data)
+    
+    # Initialize BnB active list based on search strategy
     if search_strategy == :best_bound
+        # Best-bound for Max picks larger bounds first; for Min picks smaller first.
         active_list = PriorityQueue{BnBNode, Float64}()
     else
         # Default frontier is a stack (LIFO/DFS).
         active_list = Stack{BnBNode}()
     end
-
-    # Initialize root node with incumbent objective
-    root_node = BnBNode(id=1, incumbent = incumbent_objective)
-
     # Initialize BnB structure
-    bnb = BnBCore(incumbent_solution, incumbent_objective, is_maximization, active_list, search_strategy)
-    push_active!(bnb, root_node, incumbent_objective)
-    push!(bnb.nodes, root_node)
+    bnb = BnBCore(data, incumbent, is_maximization, active_list, search_strategy)
+    
+    # Initialize root node with incumbent objective
+    root_node = BnBNode(id=1, incumbent = incumbent)
+    # Solve relaxation for root node to get a valid bound for best-bound strategy
+    root_node.relaxation = custom_relaxation(root_node, bnb)
+    # Add root node to active list with its relaxation objective as the bound
+    push_active!(bnb, root_node)
+    # Add root node to tree
     add_vertex!(bnb.tree)
+    # Add root node to node list (for plotting later)
+    push!(bnb.nodes, root_node)
     return bnb
 end
 
-# Mark all nodes that match the final incumbent as optimal.
+"""
+    mark_optimal_nodes!(bnb::BnBCore, custom_is_optimal_node::Function)
+
+Checks if a node is optimal based on user-defined criteria and marks it accordingly in the BnB structure.
+
+# Arguments
+- `bnb`: the branch-and-bound core structure containing the tree and nodes.
+- `custom_is_optimal_node`: user-defined function that takes a node and the BnB structure and returns `true` if the node is considered optimal, `false` otherwise.
+"""
 function mark_optimal_nodes!(bnb::BnBCore, custom_is_optimal_node::Function)
     empty!(bnb.optimal_node_ids)
     for node in bnb.nodes
-        is_optimal = custom_is_optimal_node(bnb, node)
+        is_optimal = custom_is_optimal_node(node, bnb)
         if is_optimal
             node.status = Optimal
             push!(bnb.optimal_node_ids, node.id)
@@ -51,62 +103,97 @@ function mark_optimal_nodes!(bnb::BnBCore, custom_is_optimal_node::Function)
     end
 end
 
-# Function to branch on a node by creating child nodes based on the selected variable
-function branch(bnb::BnBCore, node::BnBNode, bnb_branch_selection::Function)
-    # Find the first variable that is fractional in the solution
-    branch_id = bnb_branch_selection(node)
-    isnothing(branch_id) && return
-    # Generic creation of binary branches (0 and 1)
-    for val in [0.0, 1.0]
-        # Create new fixed variables list for the child node
-        new_fixes = copy(node.fixed_variables)
-        push!(new_fixes, Pair{Any, Float64}(branch_id, val))
-        # Create child node with new fixed variable
-        child = BnBNode(id=length(bnb.nodes) + 1, fixed_variables=new_fixes)
-        # Add child node to BnB structure
-        push!(bnb.nodes, child)
+"""
+    branch(bnb::BnBCore, node::BnBNode, custom_branch::Function, custom_relaxation::Function)
+
+Creates the branches based on the user criteria.
+
+# Arguments
+- `bnb`: the branch-and-bound core structure containing the tree and nodes.
+- `node`: the current node being processed.
+- `custom_branch`: user-defined function that takes a node and the BnB structure and returns a list of branching constraints.
+- `custom_relaxation`: user-defined function that takes a node and the BnB structure and returns a relaxation solution for that node.
+"""
+function branch(bnb::BnBCore, node::BnBNode, custom_branch::Function, custom_relaxation::Function)
+    # Find the variables to branch
+    branches = custom_branch(node, bnb)
+    # Create branches
+    for branch in branches
+        # Get constraints for parent node
+        new_branches = copy(node.branch_constraints)
+        # Add it the current branch constraint
+        push!(new_branches, branch)
+        # Create child node and add the constraints
+        child = BnBNode(id = length(bnb.nodes) + 1, branch_constraints = new_branches)
+        # Solve relaxation for child node to get a valid bound for best-bound strategy
+        relaxation = custom_relaxation(child, bnb)
+        if !isnothing(relaxation)
+            child.relaxation = relaxation
+        else
+            if bnb.is_maximization
+                child.relaxation = BnBSolution(solution=nothing, objective=-Inf)
+            else
+                child.relaxation = BnBSolution(solution=nothing, objective=Inf)
+            end
+        end
         # Update tree structure
         add_vertex!(bnb.tree)
         # Add edge from parent to child
         add_edge!(bnb.tree, node.id, child.id)
+        # Add child node to BnB structure
+        push!(bnb.nodes, child)
         # Add child to active list
-        push_active!(bnb, child, node.relaxation)
+        push_active!(bnb, child)
     end
 end
 
-# Function to check if we found a new incumbent solution
-function found_new_incumbent(bnb::BnBCore, node::BnBNode)
-    if (bnb.is_maximization && node.relaxation > bnb.incumbent_objective) || (!bnb.is_maximization && node.relaxation < bnb.incumbent_objective)
-        bnb.incumbent_solution = node.solution
-        bnb.incumbent_objective = node.relaxation
-        println("New incumbent found with objective: ", bnb.incumbent_objective)
+"""
+    found_new_incumbent(node::BnBNode, bnb::BnBCore)
+
+Checks if a node's relaxation solution is a new incumbent and updates the BnB structure accordingly.
+
+# Arguments
+- `node`: the current node being processed.
+- `bnb`: the branch-and-bound core structure containing the incumbent solution and objective.
+
+"""
+function found_new_incumbent(node::BnBNode, bnb::BnBCore)
+    if (bnb.is_maximization && node.relaxation.objective > bnb.incumbent.objective) || (!bnb.is_maximization && node.relaxation.objective < bnb.incumbent.objective)
+        bnb.incumbent = node.relaxation
     end
 end
 
-# Function to check pruning conditions and update node status accordingly
-function prune(bnb::BnBCore, node::BnBNode, custom_prune::Function, custom_print_node::Function)
-    node.incumbent = bnb.incumbent_objective
-    status = custom_prune(bnb, node)
+"""
+    prune(bnb::BnBCore, node::BnBNode, custom_prune::Function)
+
+Checks pruning conditions and updates node status accordingly.
+
+# Arguments
+- `bnb`: the branch-and-bound core structure containing the tree and nodes.
+- `node`: the current node being processed.
+- `custom_prune`: user-defined function that takes a node and the BnB structure and returns a `BnBNodeStatus` indicating the pruning decision.
+
+Returns `true` if the node was pruned, `false` otherwise.
+"""
+function prune(bnb::BnBCore, node::BnBNode, custom_prune::Function)
+    # Update the node incumbent with the current global incumbent before checking pruning conditions
+    node.incumbent = bnb.incumbent
+    status = custom_prune(node, bnb)
     if status == PrunedByInfeasibility
         node.status = status
         bnb.nodes[node.id] = node
-        custom_print_node(node)
         return true
     elseif status == PrunedByIntegrality
         node.status = status
-        # Check if we found a better incumbent solution
         bnb.nodes[node.id] = node
-        custom_print_node(node)
-        found_new_incumbent(bnb, node)
+        # Check if we found a better incumbent solution
+        found_new_incumbent(node, bnb)
         return true
     elseif status == PrunedByBound
         node.status = status
         bnb.nodes[node.id] = node
-        custom_print_node(node)
         return true
     end
-    custom_print_node(node)
-    println("Node not pruned, branching...")
     node.status = Exhausted
     bnb.nodes[node.id] = node
     return false
@@ -123,10 +210,11 @@ Run the branch-and-bound algorithm using user-provided callbacks.
 - `custom_incumbent::Function`: returns initial `(solution, objective)`.
 - `custom_relaxation::Function`: solves node relaxation, returns `(solution, objective)`.
 - `custom_prune::Function`: returns a `BnBNodeStatus` pruning decision.
-- `custom_branch_selection::Function`: chooses branching variable/index.
-- `custom_is_optimal_node::Function`: marks nodes matching final optimum.
+- `custom_branch::Function`: chooses branching variable/index.
+- `custom_is_optimal_solution::Function`: marks nodes matching final optimum.
 - `custom_print_node::Function`: custom hook called when nodes are processed.
 - `print_tree::Bool=true`: if `true`, plot the final search tree.
+- `plot_tree::Bool=true`: if `true`, display the BnB tree plot.
 - `custom_plot_options::BnBPlotOptions`: options for customizing the plot appearance.
 
 Returns a `BnBSolution` object containing the best solution, objective value, optimal nodes, and total nodes explored.
@@ -137,39 +225,61 @@ function solve(data::BnBData;
                custom_incumbent::Function, 
                custom_relaxation::Function,
                custom_prune::Function,
-               custom_branch_selection::Function,
-               custom_is_optimal_node::Function,
-               custom_print_node::Function,
+               custom_branch::Function,
+               custom_is_optimal_solution::Function,
                print_tree::Bool = true,
+               plot_tree::Bool = true,
                custom_plot_options::BnBPlotOptions = BnBPlotOptions())
-    # 1. Initialize incumbent solution and objective
-    sol, obj = custom_incumbent(data)
-    # 2. Initialize BnB structure
-    bnb = initialize(sol, obj, is_maximization, search_strategy)
-    # 3. Main BnB loop
+    
+    # BnB time
+    total_time = time()
+
+    # 1. Initialize BnB structure
+    bnb = initialize(data, is_maximization, search_strategy, custom_incumbent, custom_relaxation)
+    # 2. Main BnB loop
     while !isempty(bnb.active_list)
-        # 4. Select subproblem from active list
+        # 3. Select subproblem from active list
         node = pop_active!(bnb)
-        # 5. Solve the relaxed subproblem
-        node.solution, node.relaxation = custom_relaxation(node, data)
-        # 6. Update incumbent and check pruning conditions
-        if !prune(bnb, node, custom_prune, custom_print_node)
-            # 7. If not pruned, create child nodes by branching
-            branch(bnb, node, custom_branch_selection)
+        # 4. Update incumbent and check pruning conditions
+        if !prune(bnb, node, custom_prune)
+            # 5. If not pruned, create child nodes by branching
+            branch(bnb, node, custom_branch, custom_relaxation)
         end
     end
-    
+
+    # Update time
+    total_time = time() - total_time
+
     # Check for optimal nodes and mark them in the BnB structure
-    mark_optimal_nodes!(bnb, custom_is_optimal_node)
+    mark_optimal_nodes!(bnb, custom_is_optimal_solution)
+
+    println("========== Branch-and-Bound Completed ==========\n")
+
+    println("Total time: $total_time seconds")
+    println("Best solution: $(bnb.incumbent.solution)")
+    println("Objective value: $(bnb.incumbent.objective)")
     
-    # Display the BnB tree
+    println("\nNodes explored: $(length(bnb.nodes))")
+    println("Nodes pruned: $(count(node -> node.status in (PrunedByInfeasibility, PrunedByIntegrality, PrunedByBound), bnb.nodes))")
+    println("Pruning statistics:")
+    println("\t- Pruned by infeasibility: $(count(node -> node.status == PrunedByInfeasibility, bnb.nodes))")
+    println("\t- Pruned by integrality: $(count(node -> node.status == PrunedByIntegrality, bnb.nodes))")
+    println("\t- Pruned by bound: $(count(node -> node.status == PrunedByBound, bnb.nodes))")
+
+    if !isempty(bnb.global_cuts)
+        println("\nCuts generated: $(length(bnb.global_cuts))")
+    end
+    
+    # Print the search tree in ASCII format
     if print_tree
+        print_bnb_tree(bnb)
+    end
+
+    # Display the BnB tree
+    if plot_tree
         plot_bnb_tree(bnb; plot_options = custom_plot_options)
     end
 
     # Return best solution and summary
-    return BnBSolution(bnb.incumbent_solution, 
-                       bnb.incumbent_objective, 
-                       bnb.optimal_node_ids, 
-                       length(bnb.nodes))
+    return bnb.incumbent
 end

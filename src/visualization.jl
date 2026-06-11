@@ -3,7 +3,92 @@ using CairoMakie    # For plotting
 using GraphMakie    # For graph visualization
 using NetworkLayout # For the Buchheim layout algorithm
 
-# Function to visualize the branch-and-bound tree using GraphMakie
+"""
+    status_symbol(status::BnBNodeStatus)
+
+# Arguments
+- `status`: the status of a branch-and-bound node.
+
+Returns a string symbol representing the node status for visualization purposes.
+"""
+function status_symbol(status::BnBNodeStatus)
+    if status == PrunedByIntegrality
+        return "🔒"
+    elseif status == PrunedByBound
+        return "✂️"
+    elseif status == PrunedByInfeasibility
+        return "🚫"
+    elseif status == Optimal
+        return "⭐"
+    else
+        return ""
+    end
+end
+
+"""
+    print_ascii_tree(core::BnBCore, node_id::Int; prefix="", is_last=true)
+
+# Arguments
+- `core`: the branch-and-bound core structure containing the tree and nodes.
+- `node_id`: the ID of the current node to print.
+- `prefix`: string prefix for formatting the tree structure (used in recursion).
+- `is_last`: boolean indicating if the current node is the last child of its parent (used for formatting).
+
+Recursive helper function to print the branch-and-bound tree in ASCII format.
+"""
+function print_ascii_tree(core::BnBCore, node_id::Int; prefix="", is_last=true)
+    node = core.nodes[node_id]
+    branch = is_last ? "└── " : "├── "
+    obj = node.relaxation.objective
+    println(
+        prefix *
+        branch *
+        "Node $(node.id) ($(round(obj,digits=2))) " *
+        status_symbol(node.status)
+    )
+    children = collect(outneighbors(core.tree, node_id))
+    for (i, child) in enumerate(children)
+        next_prefix = prefix * (is_last ? "    " : "│   ")
+        print_ascii_tree(
+            core,
+            child;
+            prefix=next_prefix,
+            is_last=i == length(children)
+        )
+    end
+end
+
+"""
+    print_bnb_tree(core::BnBCore)
+
+# Arguments
+- `core`: the branch-and-bound core structure containing the tree and nodes.
+
+Prints the branch-and-bound search tree in a human-readable ASCII format.
+"""
+function print_bnb_tree(core::BnBCore)
+    println("\n=================================================")
+    println("Search Tree")
+    println("=================================================\n")
+    print_ascii_tree(core, 1) # Start from the root node (id = 1)
+    # Print legend for node statuses
+    println("\nLegend:\n")
+    println("\t🔒 : Pruned by Integrality")
+    println("\t🚫 : Pruned by Infeasibility")
+    println("\t✂️ : Pruned by Bound")
+    println("\t⭐ : Optimal")
+    println("\n=================================================")
+end
+
+"""
+    plot_bnb_tree(bnb::BnBCore; plot_options::BnBPlotOptions)
+
+# Arguments
+- `bnb`: the branch-and-bound core structure containing the tree and nodes.
+- `plot_options`: options for customizing the tree plot (node size, label size, legend, etc.).
+
+Plots the branch-and-bound search tree using GraphMakie, with node colors and labels based on their status and bounds.
+"""
 function plot_bnb_tree(bnb::BnBCore; plot_options::BnBPlotOptions = BnBPlotOptions())
 
     # Define colors for each node status
@@ -25,11 +110,11 @@ function plot_bnb_tree(bnb::BnBCore; plot_options::BnBPlotOptions = BnBPlotOptio
     for node in bnb.nodes
         # Node labels with id, UB and LB values
         if bnb.is_maximization
-            UB = format_bound(node.relaxation)
-            LB = format_bound(node.incumbent)
+            UB = format_bound(node.relaxation.objective)
+            LB = format_bound(node.incumbent.objective)
         else
-            UB = format_bound(node.incumbent)
-            LB = format_bound(node.relaxation)
+            UB = format_bound(node.incumbent.objective)
+            LB = format_bound(node.relaxation.objective)
         end
         base_label = "Node $(node.id)\nUB: $(UB)\nLB: $(LB)"
         push!(node_labels, base_label)
@@ -40,9 +125,10 @@ function plot_bnb_tree(bnb::BnBCore; plot_options::BnBPlotOptions = BnBPlotOptio
     # Create edge labels based on the fixed variable for each edge
     edge_labels = String[]
     for e in edges(bnb.tree)
-        # Get the last fixed variable for the child node (destination of the edge)
-        fixed_variable = bnb.nodes[dst(e)].fixed_variables[end]
-        edge_label = "x[" * join(collect(fixed_variable[1]), ",") * "] = " * string(Int(fixed_variable[2]))
+        # Get the last branch for the child node (destination of the edge)
+        branch = bnb.nodes[dst(e)].branch_constraints[end]
+        # edge_label = "x[" * join(collect(fixed_variable[1]), ",") * "] = " * string(Int(fixed_variable[2]))
+        edge_label = plot_options.branch_label(branch)
         push!(edge_labels, edge_label)
     end
 
