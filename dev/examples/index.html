@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>Examples · BnB.jl</title><meta name="title" content="Examples · BnB.jl"/><meta property="og:title" content="Examples · BnB.jl"/><meta property="twitter:title" content="Examples · BnB.jl"/><meta name="description" content="Documentation for BnB.jl."/><meta property="og:description" content="Documentation for BnB.jl."/><meta property="twitter:description" content="Documentation for BnB.jl."/><script data-outdated-warner src="../assets/warner.js"></script><link href="https://cdnjs.cloudflare.com/ajax/libs/lato-font/3.0.0/css/lato-font.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/juliamono/0.050/juliamono.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/fontawesome.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/solid.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/brands.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.8/katex.min.css" rel="stylesheet" type="text/css"/><script>documenterBaseURL=".."</script><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" data-main="../assets/documenter.js"></script><script src="../search_index.js"></script><script src="../siteinfo.js"></script><script src="../../versions.js"></script><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../assets/themes/catppuccin-mocha.css" data-theme-name="catppuccin-mocha"/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../assets/themes/catppuccin-macchiato.css" data-theme-name="catppuccin-macchiato"/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../assets/themes/catppuccin-frappe.css" data-theme-name="catppuccin-frappe"/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../assets/themes/catppuccin-latte.css" data-theme-name="catppuccin-latte"/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../assets/themes/documenter-dark.css" data-theme-name="documenter-dark" data-theme-primary-dark/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../assets/themes/documenter-light.css" data-theme-name="documenter-light" data-theme-primary/><script src="../assets/themeswap.js"></script></head><body><div id="documenter"><nav class="docs-sidebar"><a class="docs-logo" href="../"><img src="../assets/logo.svg" alt="BnB.jl logo"/></a><div class="docs-package-name"><span class="docs-autofit"><a href="../">BnB.jl</a></span></div><button class="docs-search-query input is-rounded is-small is-clickable my-2 mx-auto py-1 px-2" id="documenter-search-query">Search docs (Ctrl + /)</button><ul class="docs-menu"><li><a class="tocitem" href="../">Home</a></li><li class="is-active"><a class="tocitem" href>Examples</a><ul class="internal"><li><a class="tocitem" href="#BKP-Example"><span>BKP Example</span></a></li></ul></li><li><a class="tocitem" href="../api/">API</a></li></ul><div class="docs-version-selector field has-addons"><div class="control"><span class="docs-label button is-static is-size-7">Version</span></div><div class="docs-selector control is-expanded"><div class="select is-fullwidth is-size-7"><select id="documenter-version-selector"></select></div></div></div></nav><div class="docs-main"><header class="docs-navbar"><a class="docs-sidebar-button docs-navbar-link fa-solid fa-bars is-hidden-desktop" id="documenter-sidebar-button" href="#"></a><nav class="breadcrumb"><ul class="is-hidden-mobile"><li class="is-active"><a href>Examples</a></li></ul><ul class="is-hidden-tablet"><li class="is-active"><a href>Examples</a></li></ul></nav><div class="docs-right"><a class="docs-navbar-link" href="https://github.com/Luiz-Lorena/BnB.jl" title="View the repository on GitHub"><span class="docs-icon fa-brands"></span><span class="docs-label is-hidden-touch">GitHub</span></a><a class="docs-navbar-link" href="https://github.com/Luiz-Lorena/BnB.jl/blob/main/docs/src/examples.md" title="Edit source on GitHub"><span class="docs-icon fa-solid"></span></a><a class="docs-settings-button docs-navbar-link fa-solid fa-gear" id="documenter-settings-button" href="#" title="Settings"></a><a class="docs-article-toggle-button fa-solid fa-chevron-up" id="documenter-article-toggle-button" href="javascript:;" title="Collapse all docstrings"></a></div></header><article class="content" id="documenter-page"><h1 id="Examples"><a class="docs-heading-anchor" href="#Examples">Examples</a><a id="Examples-1"></a><a class="docs-heading-anchor-permalink" href="#Examples" title="Permalink"></a></h1><p>This page collects complete usage examples for <code>BnB.jl</code>.</p><h2 id="BKP-Example"><a class="docs-heading-anchor" href="#BKP-Example">BKP Example</a><a id="BKP-Example-1"></a><a class="docs-heading-anchor-permalink" href="#BKP-Example" title="Permalink"></a></h2><p>The BKP example below solves a binary knapsack-style problem using JuMP and HiGHS for the node relaxations.</p><h3 id="What-this-example-does"><a class="docs-heading-anchor" href="#What-this-example-does">What this example does</a><a id="What-this-example-does-1"></a><a class="docs-heading-anchor-permalink" href="#What-this-example-does" title="Permalink"></a></h3><p>The BKP instance is a small binary knapsack problem:</p><ul><li>each item has a value <code>v = 4, 2, 10, 2, 1</code></li><li>each item has a weight <code>w = [12, 2, 4, 1, 1]</code></li><li>the knapsack capacity is <code>W = 14</code></li></ul><p>The goal is to maximize total value without exceeding the capacity.</p><pre><code class="language-julia hljs">using BnB   # Branch-and-Bound framework
+<html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>Examples · BnB.jl</title><meta name="title" content="Examples · BnB.jl"/><meta property="og:title" content="Examples · BnB.jl"/><meta property="twitter:title" content="Examples · BnB.jl"/><meta name="description" content="Documentation for BnB.jl."/><meta property="og:description" content="Documentation for BnB.jl."/><meta property="twitter:description" content="Documentation for BnB.jl."/><script data-outdated-warner src="../assets/warner.js"></script><link href="https://cdnjs.cloudflare.com/ajax/libs/lato-font/3.0.0/css/lato-font.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/juliamono/0.050/juliamono.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/fontawesome.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/solid.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/brands.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.8/katex.min.css" rel="stylesheet" type="text/css"/><script>documenterBaseURL=".."</script><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" data-main="../assets/documenter.js"></script><script src="../search_index.js"></script><script src="../siteinfo.js"></script><script src="../../versions.js"></script><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../assets/themes/catppuccin-mocha.css" data-theme-name="catppuccin-mocha"/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../assets/themes/catppuccin-macchiato.css" data-theme-name="catppuccin-macchiato"/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../assets/themes/catppuccin-frappe.css" data-theme-name="catppuccin-frappe"/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../assets/themes/catppuccin-latte.css" data-theme-name="catppuccin-latte"/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../assets/themes/documenter-dark.css" data-theme-name="documenter-dark" data-theme-primary-dark/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../assets/themes/documenter-light.css" data-theme-name="documenter-light" data-theme-primary/><script src="../assets/themeswap.js"></script></head><body><div id="documenter"><nav class="docs-sidebar"><a class="docs-logo" href="../"><img src="../assets/logo.svg" alt="BnB.jl logo"/></a><div class="docs-package-name"><span class="docs-autofit"><a href="../">BnB.jl</a></span></div><button class="docs-search-query input is-rounded is-small is-clickable my-2 mx-auto py-1 px-2" id="documenter-search-query">Search docs (Ctrl + /)</button><ul class="docs-menu"><li><a class="tocitem" href="../">Home</a></li><li class="is-active"><a class="tocitem" href>Examples</a><ul class="internal"><li><a class="tocitem" href="#Example-1:-Binary-Knapsack-Problem"><span>Example 1: Binary Knapsack Problem</span></a></li><li><a class="tocitem" href="#Example-2:-Travelling-Salesman-Problem"><span>Example 2: Travelling Salesman Problem</span></a></li><li><a class="tocitem" href="#Example-3:-Maximum-Independent-Set-Problem"><span>Example 3: Maximum Independent Set Problem</span></a></li></ul></li><li><a class="tocitem" href="../api/">API</a></li></ul><div class="docs-version-selector field has-addons"><div class="control"><span class="docs-label button is-static is-size-7">Version</span></div><div class="docs-selector control is-expanded"><div class="select is-fullwidth is-size-7"><select id="documenter-version-selector"></select></div></div></div></nav><div class="docs-main"><header class="docs-navbar"><a class="docs-sidebar-button docs-navbar-link fa-solid fa-bars is-hidden-desktop" id="documenter-sidebar-button" href="#"></a><nav class="breadcrumb"><ul class="is-hidden-mobile"><li class="is-active"><a href>Examples</a></li></ul><ul class="is-hidden-tablet"><li class="is-active"><a href>Examples</a></li></ul></nav><div class="docs-right"><a class="docs-navbar-link" href="https://github.com/Luiz-Lorena/BnB.jl" title="View the repository on GitHub"><span class="docs-icon fa-brands"></span><span class="docs-label is-hidden-touch">GitHub</span></a><a class="docs-navbar-link" href="https://github.com/Luiz-Lorena/BnB.jl/blob/main/docs/src/examples.md" title="Edit source on GitHub"><span class="docs-icon fa-solid"></span></a><a class="docs-settings-button docs-navbar-link fa-solid fa-gear" id="documenter-settings-button" href="#" title="Settings"></a><a class="docs-article-toggle-button fa-solid fa-chevron-up" id="documenter-article-toggle-button" href="javascript:;" title="Collapse all docstrings"></a></div></header><article class="content" id="documenter-page"><h1 id="Examples"><a class="docs-heading-anchor" href="#Examples">Examples</a><a id="Examples-1"></a><a class="docs-heading-anchor-permalink" href="#Examples" title="Permalink"></a></h1><p>This page collects complete usage examples for <code>BnB.jl</code>.</p><h2 id="Example-1:-Binary-Knapsack-Problem"><a class="docs-heading-anchor" href="#Example-1:-Binary-Knapsack-Problem">Example 1: Binary Knapsack Problem</a><a id="Example-1:-Binary-Knapsack-Problem-1"></a><a class="docs-heading-anchor-permalink" href="#Example-1:-Binary-Knapsack-Problem" title="Permalink"></a></h2><p>The following example solves the Binary Knapsack Problem (BKP) using Linear Programming relaxation in each node.</p><h3 id="What-this-example-does"><a class="docs-heading-anchor" href="#What-this-example-does">What this example does</a><a id="What-this-example-does-1"></a><a class="docs-heading-anchor-permalink" href="#What-this-example-does" title="Permalink"></a></h3><p>The BKP instance is a small binary knapsack problem:</p><ul><li>each item has a value <code>v = [4, 2, 10, 2, 1]</code></li><li>each item has a weight <code>w = [12, 2, 4, 1, 1]</code></li><li>the knapsack capacity is <code>W = 14</code></li></ul><p>The goal is to maximize total value without exceeding the capacity.</p><pre><code class="language-julia hljs">using BnB   # Branch-and-Bound framework
 using JuMP  # Modeling language
 using HiGHS # Solver
 
-# Structure to represent the knapsack problem data
+# Structure to represent the BKP data
 struct BKPData &lt;: BnB.BnBData
-    v::Vector{Int64} # profits / values
+    v::Vector{Int64} # values
     w::Vector{Int64} # weights
     W::Int64         # capacity
     n::Int           # number of items
@@ -13,6 +13,12 @@ struct BKPData &lt;: BnB.BnBData
     function BKPData(;v::Vector{Int64}, w::Vector{Int64}, W::Int64)
         return new(v, w, W, length(v))
     end
+end
+
+# Structure to represent the branch constraint
+struct FixVariable &lt;: BnB.BnBBranchConstraint
+    i::Int64     # Variable index
+    value::Int64 # Value to fix
 end
 
 # Function to find an initial incumbent solution using a greedy heuristic based on value-to-weight ratio
@@ -33,80 +39,78 @@ function bkp_incumbent(data::BKPData)
             incumbent_objective += data.v[i]
         end
     end
-    println(&quot;-&quot;^30)
-    println(&quot;Solved initial incumbent solution (LB) using greedy heuristic.&quot;)
-    println(&quot;Incumbent solution: &quot;, solution)
-    println(&quot;Incumbent objective: &quot;, incumbent_objective)
-    return solution, incumbent_objective
+    return BnB.BnBSolution(solution=solution, objective=incumbent_objective)
 end
 
 # Function to solve the LP relaxation of the BKP for a given node
-function bkp_relaxation(node::BnB.BnBNode, data::BKPData)
+function bkp_relaxation(node::BnB.BnBNode, bnb::BnBCore)
     model = JuMP.Model(HiGHS.Optimizer)
     JuMP.set_silent(model)
-    @variable(model, 0 &lt;= x[i in 1:data.n] &lt;= 1)
-    @objective(model, Max, sum(data.v[i] * x[i] for i in 1:data.n))
-    @constraint(model, sum(data.w[i] * x[i] for i in 1:data.n) &lt;= data.W)
+    @variable(model, 0 &lt;= x[i in 1:bnb.data.n] &lt;= 1)
+    @objective(model, Max, sum(bnb.data.v[i] * x[i] for i in 1:bnb.data.n))
+    @constraint(model, sum(bnb.data.w[i] * x[i] for i in 1:bnb.data.n) &lt;= bnb.data.W)
     # Add constraints for fixed variables
-    for (var_key, value) in node.fixed_variables
-        @constraint(model, x[var_key] == value)
+    for branch in node.branch_constraints
+        @constraint(model, x[branch.i] == branch.value)
     end
     JuMP.optimize!(model)
-    if termination_status(model) == JuMP.OPTIMAL
-        return JuMP.value.(x), JuMP.objective_value(model)
-    else
-        return nothing, nothing
+    if JuMP.termination_status(model) == JuMP.OPTIMAL
+        return BnB.BnBSolution(solution=JuMP.value.(x), objective=JuMP.objective_value(model))
     end
 end
 
 # Function to check pruning conditions for a given node and update its status accordingly
-function bkp_prune(bnb::BnB.BnBCore, node::BnB.BnBNode)
+function bkp_prune(node::BnB.BnBNode, bnb::BnBCore)
     # 1. Prune by Infeasibility
-    if isnothing(node.solution)
+    if isnothing(node.relaxation.solution)
         return BnB.PrunedByInfeasibility
     end
     # 2. Prune by Integrality
-    if !any(x -&gt; 1e-5 &lt; x &lt; (1 - 1e-5), node.solution)
+    if !any(x -&gt; 1e-5 &lt; x &lt; (1 - 1e-5), node.relaxation.solution)
         return BnB.PrunedByIntegrality
     end
     # 3. Prune by Bound
-    if node.relaxation &lt;= bnb.incumbent_objective
+    if node.relaxation.objective &lt;= bnb.incumbent.objective
         return BnB.PrunedByBound
     end
+    return BnB.Active
 end
 
-# Function to select the variable for branching based on the first fractional variable in the solution
-function bkp_branch_selection(node::BnB.BnBNode)
-    # Find the first variable that is fractional in the solution
-    branch_id = findfirst(x -&gt; 1e-5 &lt; x &lt; (1 - 1e-5), node.solution)
-    return branch_id
+# Function to select the branches and the values to fix for a given node
+function bkp_branch(node::BnB.BnBNode, bnb::BnB.BnBCore)
+    # Create two branches: one excluding the edge and one including the edge
+    branch_constraints = Vector{BnB.BnBBranchConstraint}()
+    # Find all fractional variables in the solution
+    fractional_variables = findall(x -&gt; 1e-5 &lt; x &lt; (1 - 1e-5), node.relaxation.solution)
+    # Create branches
+    for var in fractional_variables
+        left_branch = FixVariable(var, 0)
+        right_branch = FixVariable(var, 1)
+        # Check if the variable is already fixed to 0.0 in the current node
+        if left_branch in node.branch_constraints || right_branch in node.branch_constraints
+            continue
+        end
+        push!(branch_constraints, left_branch)  # Left branch: exclude the item
+        push!(branch_constraints, right_branch) # Right branch: include the item
+        return branch_constraints
+    end
 end
 
-# Function to determine if a node is optimal by checking if it has an integral solution and if its relaxation value matches the incumbent objective value
-function bkp_is_optimal_node(bnb::BnB.BnBCore, node::BnB.BnBNode)
+# Function to determine if a node contains an optimal solution
+function bkp_is_optimal_solution(node::BnB.BnBNode, bnb::BnBCore)
     # Check if the node has a valid solution
-    if isnothing(node.solution)
+    if isnothing(node.relaxation.solution)
         return false
     end
-    # Check if the solution is integral
-    is_integral = !any(x -&gt; 1e-5 &lt; x &lt; (1 - 1e-5), node.solution)
+    # Check if the solution is integral (i.e., all variables are either 0 or 1)
+    is_integral = !any(x -&gt; 1e-5 &lt; x &lt; (1 - 1e-5), node.relaxation.solution)
     # Check if the relaxation value matches the best incumbent objective value within a tolerance
-    is_optimal = isapprox(node.relaxation, bnb.incumbent_objective; atol=1e-6)
-    # A node is considered optimal if it has an integral solution and its relaxation value matches the incumbent objective value
+    is_optimal = isapprox(node.relaxation.objective, bnb.incumbent.objective; atol=1e-6)
+    # It is optimal if it has an integral solution and its relaxation value matches the incumbent objective value
     if is_integral &amp;&amp; is_optimal
         return true
     end
     return false
-end
-
-# Function to print the details of a node in the branch-and-bound tree
-function bkp_print_node(node::BnB.BnBNode)
-    println(&quot;-&quot;^30)
-    println(&quot;Node ID: &quot;, node.id)
-    println(&quot;Solution: &quot;, node.solution)
-    println(&quot;Relaxation value: &quot;, node.relaxation)
-    println(&quot;Incumbent value: &quot;, node.incumbent)
-    println(&quot;Status: &quot;, node.status)
 end
 
 # Example
@@ -123,25 +127,345 @@ custom_plot_options = BnB.BnBPlotOptions(
     node_label_size = 14,
     edge_label_size = 14,
     show_legend = true,
-    legend_position = :bottom
+    legend_position = :bottom,
+    branch_label = (branch::FixVariable) -&gt; &quot;x[$(branch.i)] = $(branch.value)&quot;
 )
 
 # Solve the BKP using the BnB framework
 solution = BnB.solve(data,
                      is_maximization = true,
-                     search_strategy = :best_bound,
                      custom_incumbent = bkp_incumbent,
                      custom_relaxation = bkp_relaxation,        
                      custom_prune = bkp_prune,
-                     custom_branch_selection = bkp_branch_selection,
-                     custom_is_optimal_node = bkp_is_optimal_node,
-                     custom_print_node = bkp_print_node,
-                     print_tree = true,
-                     custom_plot_options = custom_plot_options)
+                     custom_branch = bkp_branch,
+                     custom_is_optimal_solution = bkp_is_optimal_solution,
+                     custom_plot_options = custom_plot_options)</code></pre><h3 id="Step-by-step-walkthrough"><a class="docs-heading-anchor" href="#Step-by-step-walkthrough">Step-by-step walkthrough</a><a id="Step-by-step-walkthrough-1"></a><a class="docs-heading-anchor-permalink" href="#Step-by-step-walkthrough" title="Permalink"></a></h3><ol><li><code>BKPData</code> stores the problem data and precomputes <code>n</code>, the number of items.</li><li><code>bkp_incumbent</code> builds a fast initial feasible solution by sorting items by value-to-weight ratio and greedily filling the knapsack.</li><li><code>bkp_relaxation</code> solves the linear relaxation of the current node with JuMP and HiGHS, allowing fractional item values between 0 and 1.</li><li>The fixed variables in <code>node.fixed_variables</code> are applied as equality constraints so each branch inherits the decisions made higher in the tree.</li><li><code>bkp_prune</code> decides whether a node should be discarded because it is infeasible, cannot beat the incumbent bound, or is already integral.</li><li><code>bkp_branch_selection</code> picks the first fractional variable and branches on it.</li><li><code>bkp_is_optimal_node</code> checks whether the node is both integral and matches the current incumbent objective.</li><li><code>bkp_print_node</code> is a no-op hook, so the solver does not print per-node output.</li><li><code>BnB.solve</code> ties everything together by running branch-and-bound on the sample data with the custom callbacks.</li></ol><p>This example matches the integration test in the repository&#39;s test suite, which lives in the GitHub source tree.</p><h2 id="Example-2:-Travelling-Salesman-Problem"><a class="docs-heading-anchor" href="#Example-2:-Travelling-Salesman-Problem">Example 2: Travelling Salesman Problem</a><a id="Example-2:-Travelling-Salesman-Problem-1"></a><a class="docs-heading-anchor-permalink" href="#Example-2:-Travelling-Salesman-Problem" title="Permalink"></a></h2><p>The following example solves the Travelling Salesman Problem (TSP) using Linear Programming relaxation in each node.</p><h3 id="What-this-example-does-2"><a class="docs-heading-anchor" href="#What-this-example-does-2">What this example does</a><a class="docs-heading-anchor-permalink" href="#What-this-example-does-2" title="Permalink"></a></h3><p>The TSP instance file is composed by 7 cities:</p><p>$</p><p>coordinates = \begin{bmatrix} -23.2018 &amp; -45.9000 \
+-23.1980 &amp; -45.8925 \
+-23.1985 &amp; -45.9010 \
+-23.2040 &amp; -45.8950 \
+-23.2030 &amp; -45.9025 \
+-23.2039 &amp; -45.8995 \
+-23.1995 &amp; -45.8998 \end{bmatrix} $</p><img src="assets/TSP.png" alt="TSP instance"/><p>The goal is to find the shortest possible route that allows a traveler to visit a set of cities exactly once and return to the starting city.</p><pre><code class="language-julia hljs">using BnB       # Branch-and-Bound framework
+using JuMP      # Modeling language
+using HiGHS     # Solver
+using CSV       # Data handling
+using Distances # Distance computations
 
-# Print the final results
-println(&quot;=&quot;^15, &quot; Results &quot;, &quot;=&quot;^15)
-println(&quot;Best solution found: &quot;, solution.solution)
-println(&quot;Best objective value: &quot;, solution.objective)
-println(&quot;Best nodes ID: &quot;, solution.optimal_nodes)
-println(&quot;Total nodes explored: &quot;, solution.total_nodes)</code></pre><h3 id="Step-by-step-walkthrough"><a class="docs-heading-anchor" href="#Step-by-step-walkthrough">Step-by-step walkthrough</a><a id="Step-by-step-walkthrough-1"></a><a class="docs-heading-anchor-permalink" href="#Step-by-step-walkthrough" title="Permalink"></a></h3><ol><li><code>BKPData</code> stores the problem data and precomputes <code>n</code>, the number of items.</li><li><code>bkp_incumbent</code> builds a fast initial feasible solution by sorting items by value-to-weight ratio and greedily filling the knapsack.</li><li><code>bkp_relaxation</code> solves the linear relaxation of the current node with JuMP and HiGHS, allowing fractional item values between 0 and 1.</li><li>The fixed variables in <code>node.fixed_variables</code> are applied as equality constraints so each branch inherits the decisions made higher in the tree.</li><li><code>bkp_prune</code> decides whether a node should be discarded because it is infeasible, cannot beat the incumbent bound, or is already integral.</li><li><code>bkp_branch_selection</code> picks the first fractional variable and branches on it.</li><li><code>bkp_is_optimal_node</code> checks whether the node is both integral and matches the current incumbent objective.</li><li><code>bkp_print_node</code> is a no-op hook, so the solver does not print per-node output.</li><li><code>BnB.solve</code> ties everything together by running branch-and-bound on the sample data with the custom callbacks.</li></ol><p>This example matches the integration test in the repository&#39;s test suite, which lives in the GitHub source tree.</p></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../">« Home</a><a class="docs-footer-nextpage" href="../api/">API »</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="auto">Automatic (OS)</option><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option><option value="catppuccin-latte">catppuccin-latte</option><option value="catppuccin-frappe">catppuccin-frappe</option><option value="catppuccin-macchiato">catppuccin-macchiato</option><option value="catppuccin-mocha">catppuccin-mocha</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 1.17.0 on <span class="colophon-date" title="Saturday 6 June 2026 17:31">Saturday 6 June 2026</span>. Using Julia version 1.12.6.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
+# Structure to represent the TSP data
+struct TSPData &lt;: BnB.BnBData
+    coordinates::Matrix{Float64}     # City coordinates
+    distance_matrix::Matrix{Float64} # Precomputed distance matrix
+    n::Int                           # Number of cities
+    # Constructor
+    function TSPData(;file_path::String)
+        coordinates = CSV.read(file_path, CSV.Tables.matrix, header=false)
+        distance_matrix = Distances.pairwise(Distances.Haversine(), coordinates, dims=1)
+        return new(coordinates, distance_matrix, size(coordinates, 1))
+    end
+end
+
+# Structure to represent the branch constraint
+struct FixVariable &lt;: BnB.BnBBranchConstraint
+    i::Int64     # Variable index i 
+    j::Int64     # Variable index j
+    value::Int64 # Value to fix
+end
+
+# Function to find an initial incumbent solution using the Nearest Neighbor heuristic
+function tsp_incumbent(data::TSPData)
+    visited = falses(data.n)
+    solution = zeros(Int, data.n)
+    # Start from the first city
+    current_city = 1
+    solution[1] = current_city
+    visited[current_city] = true
+    incumbent_objective = 0.0
+    for k in 2:data.n
+        # Find the nearest unvisited city
+        next_city = argmin([visited[j] ? Inf : data.distance_matrix[current_city, j] for j in 1:data.n])
+        solution[k] = next_city
+        visited[next_city] = true
+        incumbent_objective += data.distance_matrix[current_city, next_city]
+        current_city = next_city
+    end
+    # Add the distance to return to the starting city
+    incumbent_objective += data.distance_matrix[current_city, solution[1]]
+    return BnB.BnBSolution(solution=solution, objective=incumbent_objective)
+end
+
+# Function to solve the LP relaxation of the TSP for a given node
+function tsp_relaxation(node::BnB.BnBNode, bnb::BnBCore)
+    model = JuMP.Model(HiGHS.Optimizer)
+    JuMP.set_silent(model)
+    @variable(model, x[i in 1:bnb.data.n, j in 1:bnb.data.n], Bin)
+    @objective(model, Min, sum(bnb.data.distance_matrix[i, j] * x[i, j] for i in 1:bnb.data.n, j in 1:bnb.data.n))
+    @constraint(model, [i in 1:bnb.data.n], x[i, i] == 0)
+    @constraint(model, [j in 1:bnb.data.n], sum(x[i, j] for i in 1:bnb.data.n) == 1)
+    @constraint(model, [i in 1:bnb.data.n], sum(x[i, j] for j in 1:bnb.data.n) == 1)
+    # Add constraints for fixed variables
+    for branch in node.branch_constraints
+        @constraint(model, x[branch.i, branch.j] == branch.value)
+    end
+    JuMP.optimize!(model)
+    if JuMP.termination_status(model) == JuMP.OPTIMAL
+        # Extract the routes from the solution
+        x_val = JuMP.value.(x)
+        # Identify cycles in the solution to check for integrality and to identify subtours
+        visited = fill(false, bnb.data.n)
+        cycles = Vector{Vector{Int}}()
+        for start in 1:bnb.data.n
+            if !visited[start]
+                cycle = Int[start]
+                visited[start] = true
+                nxt = findfirst(x_val[start, :] .&gt; 0.5)
+                while nxt !== nothing &amp;&amp; !visited[nxt]
+                    push!(cycle, nxt)
+                    visited[nxt] = true
+                    nxt = findfirst(x_val[nxt, :] .&gt; 0.5)
+                end
+                push!(cycles, cycle)
+            end
+        end
+        # return cycles, JuMP.objective_value(model)
+        return BnB.BnBSolution(solution=cycles, objective=JuMP.objective_value(model))
+    end
+end
+
+# Function to check pruning conditions for a given node and update its status accordingly
+function tsp_prune(node::BnB.BnBNode, bnb::BnB.BnBCore)
+    # 1. Prune by Infeasibility
+    if isnothing(node.relaxation.objective)
+        return BnB.PrunedByInfeasibility
+    end
+    # 2. Prune by Integrality
+    if length(node.relaxation.solution) == 1
+        return BnB.PrunedByIntegrality
+    end
+    # 3. Prune by Bound
+    if node.relaxation.objective &gt;= bnb.incumbent.objective
+        return BnB.PrunedByBound
+    end
+    return BnB.Active
+end
+
+# Function to select the branches and the values to fix for a given node
+function tsp_branch(node::BnB.BnBNode, bnb::BnB.BnBCore)
+    # Create two branches: one excluding the edge and one including the edge
+    branch_constraints = Vector{BnB.BnBBranchConstraint}()
+    # Sort cycles by length to prioritize branching on the smallest subtour
+    subtours = sort(node.relaxation.solution, by=length)
+    # Select the first edge of the smallest subtour for branching
+    for subtour in subtours
+        # Iterate through the edges of the subtour and find the first edge that is not already fixed to 0.0 in the current node
+        for i in 1:(length(subtour) - 1)
+            left_branch = FixVariable(subtour[i], subtour[i+1], 0)
+            right_branch = FixVariable(subtour[i+1], subtour[i], 0)
+            # Check if the edge is already fixed to 0 in the current node
+            if left_branch in node.branch_constraints || right_branch in node.branch_constraints
+                continue
+            end
+            push!(branch_constraints, left_branch)  # Left branch: exclude the edge
+            push!(branch_constraints, right_branch) # Right branch: exclude the reverse edge
+            return branch_constraints
+        end
+    end
+end
+
+# Function to determine if a node contains an optimal solution
+function tsp_is_optimal_solution(node::BnB.BnBNode, bnb::BnB.BnBCore)
+    # Check if the node has a valid solution
+    if isnothing(node.relaxation.solution)
+        return false
+    end
+    # Check if the solution is integral (i.e., forms a single cycle)
+    is_integral = length(node.relaxation.solution) == 1
+    # Check if the relaxation value matches the best incumbent objective value within a tolerance
+    is_optimal = isapprox(node.relaxation.objective, bnb.incumbent.objective; atol=1e-6)
+    # A node is considered optimal if it has an integral solution and its relaxation value matches the incumbent objective value
+    if is_integral &amp;&amp; is_optimal
+        return true
+    end
+    return false
+end
+
+# Example
+data = TSPData(file_path=&quot;data/tsp_instance.csv&quot;)
+
+# Define plot options for this example
+custom_plot_options = BnB.BnBPlotOptions(
+    figure_size = (750, 400),
+    node_size = (140, 90),
+    node_label_size = 14,
+    edge_label_size = 14,
+    show_legend = true,
+    legend_position = :bottom,
+    branch_label = (branch::FixVariable) -&gt; &quot;x[$(branch.i),$(branch.j)] = $(branch.value)&quot;
+)
+
+# Solve the TSP using the BnB framework
+solution = BnB.solve(data,
+                     is_maximization = false,
+                     custom_incumbent = tsp_incumbent,
+                     custom_relaxation = tsp_relaxation,        
+                     custom_prune = tsp_prune,
+                     custom_branch = tsp_branch,
+                     custom_is_optimal_solution = tsp_is_optimal_solution,
+                     custom_plot_options = custom_plot_options)</code></pre><h2 id="Example-3:-Maximum-Independent-Set-Problem"><a class="docs-heading-anchor" href="#Example-3:-Maximum-Independent-Set-Problem">Example 3: Maximum Independent Set Problem</a><a id="Example-3:-Maximum-Independent-Set-Problem-1"></a><a class="docs-heading-anchor-permalink" href="#Example-3:-Maximum-Independent-Set-Problem" title="Permalink"></a></h2><p>The following example solves the Maximum Independent Set Problem (MISP) using Linear Programming relaxation in each node of the BnB tree.</p><img src="assets/MISP.png" alt="MISP instance"/><h3 id="What-this-example-does-3"><a class="docs-heading-anchor" href="#What-this-example-does-3">What this example does</a><a class="docs-heading-anchor-permalink" href="#What-this-example-does-3" title="Permalink"></a></h3><p>The MISP instance is a graph: </p><p>$</p><p>A = \begin{bmatrix} 0 &amp; 1 &amp; 0 &amp; 0 &amp; 0 &amp; 1 &amp; 0 &amp; 1 &amp; 1 &amp; 0 &amp; 0 &amp; 1 \
+1 &amp; 0 &amp; 1 &amp; 0 &amp; 0 &amp; 1 &amp; 1 &amp; 0 &amp; 1 &amp; 0 &amp; 0 &amp; 0 \
+0 &amp; 1 &amp; 0 &amp; 1 &amp; 0 &amp; 0 &amp; 1 &amp; 0 &amp; 1 &amp; 1 &amp; 0 &amp; 0 \
+0 &amp; 0 &amp; 1 &amp; 0 &amp; 1 &amp; 0 &amp; 1 &amp; 0 &amp; 0 &amp; 1 &amp; 1 &amp; 0 \
+0 &amp; 0 &amp; 0 &amp; 1 &amp; 0 &amp; 1 &amp; 1 &amp; 0 &amp; 0 &amp; 0 &amp; 1 &amp; 1 \
+1 &amp; 1 &amp; 0 &amp; 0 &amp; 1 &amp; 0 &amp; 1 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 1 \
+0 &amp; 1 &amp; 1 &amp; 1 &amp; 1 &amp; 1 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 \
+1 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 1 &amp; 1 &amp; 1 &amp; 1 \
+1 &amp; 1 &amp; 1 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 1 &amp; 0 &amp; 1 &amp; 0 &amp; 0 \
+0 &amp; 0 &amp; 1 &amp; 1 &amp; 0 &amp; 0 &amp; 0 &amp; 1 &amp; 1 &amp; 0 &amp; 1 &amp; 0 \
+0 &amp; 0 &amp; 0 &amp; 1 &amp; 1 &amp; 0 &amp; 0 &amp; 1 &amp; 0 &amp; 1 &amp; 0 &amp; 1 \
+1 &amp; 0 &amp; 0 &amp; 0 &amp; 1 &amp; 1 &amp; 0 &amp; 1 &amp; 0 &amp; 0 &amp; 1 &amp; 0 \end{bmatrix} $</p><p>The goal is to find the largest possible independent set (maximum cardinality) in the graph.</p><pre><code class="language-julia hljs">using BnB    # Branch-and-Bound framework
+using JuMP   # Modeling language
+using HiGHS  # Solver
+using Graphs # Graphs package
+
+# Structure to represent the MISP data
+struct MISPData &lt;: BnB.BnBData
+    graph::Graphs.SimpleGraph # Graph structure
+    n::Int64                  # Number of vertices
+    m::Int64                  # Number of edges
+    # Constructor
+    function MISPData(graph::Graphs.SimpleGraph)
+        n = Graphs.nv(graph)
+        m = Graphs.ne(graph)
+        return new(graph, n, m)
+    end
+end
+
+# Structure to represent the branch constraint
+struct FixVariable &lt;: BnB.BnBBranchConstraint
+    v::Int64     # Variable index
+    value::Int64 # Value to fix
+end
+
+# Function to find an initial incumbent solution using a greedy heuristic
+function misp_incumbent(data::MISPData)
+    graph = data.graph
+    n = data.n
+    # Initialize the independent set and a set to track selected vertices
+    independent_set = Set{Int}()
+    selected = falses(n)
+    # Iterate over vertices in order of degree (lowest degree first)
+    for v in sort(1:n, by=v -&gt; Graphs.degree(graph, v))
+        if !selected[v]
+            push!(independent_set, v)
+            selected[v] = true
+            # Mark neighbors as selected to prevent their inclusion
+            for neighbor in Graphs.neighbors(graph, v)
+                selected[neighbor] = true
+            end
+        end
+    end
+    return BnB.BnBSolution(solution=independent_set, objective=length(independent_set))
+end
+
+# Function to solve the LP relaxation of the MISP for a given node
+function misp_relaxation(node::BnB.BnBNode, bnb::BnBCore)
+    # Create the model
+    model = JuMP.Model(HiGHS.Optimizer)
+    # Silent mode (solver output is not printed)
+    JuMP.set_silent(model)
+    # Define the decision variables
+    @variable(model, 0 &lt;= x[v in 1:bnb.data.n] &lt;= 1)
+    # Objective function: maximize the total of selected vertices
+    @objective(model, Max, sum(x[v] for v in 1:bnb.data.n))
+    # Independence constraint
+    for e in Graphs.edges(bnb.data.graph)
+        @constraint(model, x[e.src] + x[e.dst] &lt;= 1)
+    end
+    # Add constraints for fixed variables
+    for branch in node.branch_constraints
+        @constraint(model, x[branch.v] == branch.value)
+    end
+    # Run the solver
+    JuMP.optimize!(model)
+    if JuMP.termination_status(model) == JuMP.OPTIMAL
+        return BnB.BnBSolution(solution=JuMP.value.(x), objective=JuMP.objective_value(model))
+    end
+end
+
+# Function to check pruning conditions for a given node and update its status accordingly
+function misp_prune(node::BnB.BnBNode, bnb::BnB.BnBCore)
+    # 1. Prune by Infeasibility
+    if isnothing(node.relaxation.solution)
+        return BnB.PrunedByInfeasibility
+    end
+    # 2. Prune by Integrality
+    if !any(x -&gt; 1e-5 &lt; x &lt; (1 - 1e-5), node.relaxation.solution)
+        return BnB.PrunedByIntegrality
+    end
+    # 3. Prune by Bound
+    if node.relaxation.objective &lt;= bnb.incumbent.objective
+        return BnB.PrunedByBound
+    end
+    return BnB.Active
+end
+
+# Function to select the branches and the values to fix for a given node
+function misp_branch(node::BnB.BnBNode, bnb::BnB.BnBCore)
+    # Create two branches: one excluding the edge and one including the edge
+    branch_constraints = Vector{BnB.BnBBranchConstraint}()
+    # Find all fractional variables in the solution
+    fractional_variables = findall(x -&gt; 1e-5 &lt; x &lt; (1 - 1e-5), node.relaxation.solution)
+    # Create branches
+    for var in fractional_variables
+        left_branch = FixVariable(var, 0)
+        right_branch = FixVariable(var, 1)
+        # Check if the variable is already fixed in the current node
+        if left_branch in node.branch_constraints || right_branch in node.branch_constraints
+            continue
+        end
+        push!(branch_constraints, left_branch)  # Left branch: exclude the vertice
+        push!(branch_constraints, right_branch) # Right branch: include the vertice
+        return branch_constraints
+    end
+end
+
+# Function to determine if a node is optimal by checking if it has an integral solution and if its relaxation value matches the incumbent objective value
+function misp_is_optimal_solution(node::BnB.BnBNode, bnb::BnB.BnBCore)
+    # Check if the node has a valid solution
+    if isnothing(node.relaxation.solution)
+        return false
+    end
+    # Check if the solution is integral (i.e., all variables are either 0 or 1)
+    is_integral = !any(x -&gt; 1e-5 &lt; x &lt; (1 - 1e-5), node.relaxation.solution)
+    # Check if the relaxation value matches the best incumbent objective value within a tolerance
+    is_optimal = isapprox(node.relaxation.objective, bnb.incumbent.objective; atol=1e-6)
+    # It is optimal if it has an integral solution and its relaxation value matches the incumbent objective value
+    if is_integral &amp;&amp; is_optimal
+        return true
+    end
+    return false
+end
+
+# Example
+graph = Graphs.smallgraph(&quot;icosahedral&quot;)
+data = MISPData(graph)
+
+# Define plot options for this example
+custom_plot_options = BnB.BnBPlotOptions(
+    figure_size = (950, 950),
+    node_size = (95, 90),
+    node_label_size = 14,
+    edge_label_size = 14,
+    show_legend = true,
+    legend_position = :bottom,
+    branch_label = (branch::FixVariable) -&gt; &quot;x[$(branch.v)] = $(branch.value)&quot;
+)
+
+# Solve the MISP using the BnB framework
+solution = BnB.solve(data,
+                     is_maximization = true,
+                     custom_incumbent = misp_incumbent,
+                     custom_relaxation = misp_relaxation,        
+                     custom_prune = misp_prune,
+                     custom_branch = misp_branch,
+                     custom_is_optimal_solution = misp_is_optimal_solution,
+                     custom_plot_options = custom_plot_options)</code></pre></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../">« Home</a><a class="docs-footer-nextpage" href="../api/">API »</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="auto">Automatic (OS)</option><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option><option value="catppuccin-latte">catppuccin-latte</option><option value="catppuccin-frappe">catppuccin-frappe</option><option value="catppuccin-macchiato">catppuccin-macchiato</option><option value="catppuccin-mocha">catppuccin-mocha</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 1.17.0 on <span class="colophon-date" title="Thursday 11 June 2026 19:17">Thursday 11 June 2026</span>. Using Julia version 1.12.6.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
