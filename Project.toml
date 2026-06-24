@@ -1,6 +1,6 @@
 name = "BnB"
 uuid = "92b0845d-0f24-4363-b99d-6b0a3b045c53"
-version = "0.4.5"
+version = "0.5.0"
 authors = ["Luiz H N Lorena <luiz-lorena@hotmail.com>"]
 
 [deps]

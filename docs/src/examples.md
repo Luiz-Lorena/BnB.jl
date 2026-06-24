@@ -392,7 +392,11 @@ A = \begin{bmatrix}
 \end{bmatrix}
 ```
 
+<div align="center">
+
 ![MISP instance](assets/MISP.png)
+
+</div>
 
 The goal is to find the largest possible independent set (maximum cardinality) in the graph.
 

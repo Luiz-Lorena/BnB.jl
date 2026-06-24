@@ -16,6 +16,11 @@ export
     BnBSolution,
     BnBNode,
     BnBCore,
-    solve
+    solve,
+    custom_incumbent,
+    custom_relaxation,
+    custom_prune,
+    custom_branch,
+    custom_is_optimal_solution
 
 end
