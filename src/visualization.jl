@@ -105,7 +105,7 @@ function plot_bnb_tree(bnb::BnBCore; plot_options::BnBPlotOptions = BnBPlotOptio
     node_colors = Color[]
 
     # Some nodes can be infeasible and keep relaxation = nothing.
-    format_bound(x) = isnothing(x) ? "NA" : string(round(x, digits=2))
+    format_bound(x) = isnothing(x) || isinf(x) ? "NA" : string(round(x, digits=2))
 
     for node in bnb.nodes
         # Node labels with id, UB and LB values
