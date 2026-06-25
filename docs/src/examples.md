@@ -10,14 +10,14 @@ The following example solves the Binary Knapsack Problem (BKP) using Linear Prog
 
 The BKP instance is a small binary knapsack problem:
 
-- each item has a value `v = [4, 2, 10, 2, 1]`
-- each item has a weight `w = [12, 2, 4, 1, 1]`
-- the knapsack capacity is `W = 14`
+- each item has a value `v = [8, 16, 20, 12, 6, 10, 4]`
+- each item has a weight `w = [3, 7, 9, 6, 3, 5, 2]`
+- the knapsack capacity is `W = 17`
 
 The goal is to maximize total value without exceeding the capacity.
 
 ```julia
-using BnB   # Branch-and-Bound framework
+using BnB   # BnB Framework
 using JuMP  # Modeling language
 using HiGHS # Solver
 
@@ -40,7 +40,7 @@ struct FixVariable <: BnB.BnBBranchConstraint
 end
 
 # Function to find an initial incumbent solution using a greedy heuristic based on value-to-weight ratio
-function bkp_incumbent(data::BKPData)
+function BnB.custom_incumbent(data::BKPData)
     # Value-to-weight ratios
     ratios = data.v ./ data.w
     # Sort items by decreasing ratio
@@ -61,7 +61,7 @@ function bkp_incumbent(data::BKPData)
 end
 
 # Function to solve the LP relaxation of the BKP for a given node
-function bkp_relaxation(node::BnB.BnBNode, bnb::BnBCore)
+function BnB.custom_relaxation(node::BnB.BnBNode, bnb::BnB.BnBCore)
     model = JuMP.Model(HiGHS.Optimizer)
     JuMP.set_silent(model)
     @variable(model, 0 <= x[i in 1:bnb.data.n] <= 1)
@@ -78,7 +78,7 @@ function bkp_relaxation(node::BnB.BnBNode, bnb::BnBCore)
 end
 
 # Function to check pruning conditions for a given node and update its status accordingly
-function bkp_prune(node::BnB.BnBNode, bnb::BnBCore)
+function BnB.custom_prune(node::BnB.BnBNode, bnb::BnB.BnBCore)
     # 1. Prune by Infeasibility
     if isnothing(node.relaxation.solution)
         return BnB.PrunedByInfeasibility
@@ -95,7 +95,7 @@ function bkp_prune(node::BnB.BnBNode, bnb::BnBCore)
 end
 
 # Function to select the branches and the values to fix for a given node
-function bkp_branch(node::BnB.BnBNode, bnb::BnB.BnBCore)
+function BnB.custom_branch(node::BnB.BnBNode, bnb::BnB.BnBCore)
     # Create two branches: one excluding the edge and one including the edge
     branch_constraints = Vector{BnB.BnBBranchConstraint}()
     # Find all fractional variables in the solution
@@ -115,7 +115,7 @@ function bkp_branch(node::BnB.BnBNode, bnb::BnB.BnBCore)
 end
 
 # Function to determine if a node contains an optimal solution
-function bkp_is_optimal_solution(node::BnB.BnBNode, bnb::BnBCore)
+function BnB.custom_is_optimal_solution(node::BnB.BnBNode, bnb::BnB.BnBCore)
     # Check if the node has a valid solution
     if isnothing(node.relaxation.solution)
         return false
@@ -133,14 +133,14 @@ end
 
 # Example
 data = BKPData(
-    v = [4, 2, 10, 2, 1],
-    w = [12, 2, 4, 1, 1],
-    W = 15
+    v = [8, 16, 20, 12, 6, 10, 4],
+    w = [3, 7, 9, 6, 3, 5, 2],
+    W = 17
 )
 
 # Define plot options for this example
 custom_plot_options = BnB.BnBPlotOptions(
-    figure_size = (750, 400),
+    figure_size = (750, 650),
     node_size = (130, 90),
     node_label_size = 14,
     edge_label_size = 14,
@@ -150,15 +150,55 @@ custom_plot_options = BnB.BnBPlotOptions(
 )
 
 # Solve the BKP using the BnB framework
-solution = BnB.solve(data,
-                     is_maximization = true,
-                     custom_incumbent = bkp_incumbent,
-                     custom_relaxation = bkp_relaxation,        
-                     custom_prune = bkp_prune,
-                     custom_branch = bkp_branch,
-                     custom_is_optimal_solution = bkp_is_optimal_solution,
-                     custom_plot_options = custom_plot_options)
+solution = BnB.solve(data, is_maximization = true, search_strategy = :best_bound, custom_plot_options = custom_plot_options)
 ```
+
+The following output presents the result after executing the presented julia code.
+
+```
+========== Branch-and-Bound Completed ==========
+
+Total time: 0.04331803321838379 seconds
+Best solution: [1.0, -0.0, 1.0, 0.0, 0.0, 1.0, -0.0]
+Objective value: 38.0
+
+Nodes explored: 13
+Nodes pruned: 6
+Pruning statistics:
+	- Pruned by infeasibility: 2
+	- Pruned by integrality: 0
+	- Pruned by bound: 4
+
+=================================================
+Search Tree
+=================================================
+
+└── Node 1 (39.56) 
+    ├── Node 2 (38.0) 
+    │   ├── Node 8 (38.0) ✂️
+    │   └── Node 9 (38.0) 
+    │       ├── Node 12 (38.0) ✂️
+    │       └── Node 13 (36.86) ✂️
+    └── Node 3 (39.43) 
+        ├── Node 4 (38.0) ⭐
+        └── Node 5 (38.67) 
+            ├── Node 6 (38.0) 
+            │   ├── Node 10 (38.0) ✂️
+            │   └── Node 11 (-Inf) 🚫
+            └── Node 7 (-Inf) 🚫
+
+Legend:
+
+	🔒 : Pruned by Integrality
+	🚫 : Pruned by Infeasibility
+	✂️ : Pruned by Bound
+	⭐ : Optimal
+
+=================================================
+```
+
+
+
 
 ### Step-by-step walkthrough
 

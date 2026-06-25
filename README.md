@@ -45,7 +45,7 @@ The framework can be used for problems such as:
 
 ```julia
 using Pkg
-Pkg.add(url="https://github.com/yourname/BnB.jl")
+Pkg.add(url="https://github.com/Luiz-Lorena/BnB.jl")
 ```
 
 ## Quick Start
