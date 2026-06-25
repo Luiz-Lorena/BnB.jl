@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>Examples · BnB.jl</title><meta name="title" content="Examples · BnB.jl"/><meta property="og:title" content="Examples · BnB.jl"/><meta property="twitter:title" content="Examples · BnB.jl"/><meta name="description" content="Documentation for BnB.jl."/><meta property="og:description" content="Documentation for BnB.jl."/><meta property="twitter:description" content="Documentation for BnB.jl."/><script data-outdated-warner src="../assets/warner.js"></script><link href="https://cdnjs.cloudflare.com/ajax/libs/lato-font/3.0.0/css/lato-font.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/juliamono/0.050/juliamono.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/fontawesome.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/solid.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/brands.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.8/katex.min.css" rel="stylesheet" type="text/css"/><script>documenterBaseURL=".."</script><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" data-main="../assets/documenter.js"></script><script src="../search_index.js"></script><script src="../siteinfo.js"></script><script src="../../versions.js"></script><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../assets/themes/catppuccin-mocha.css" data-theme-name="catppuccin-mocha"/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../assets/themes/catppuccin-macchiato.css" data-theme-name="catppuccin-macchiato"/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../assets/themes/catppuccin-frappe.css" data-theme-name="catppuccin-frappe"/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../assets/themes/catppuccin-latte.css" data-theme-name="catppuccin-latte"/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../assets/themes/documenter-dark.css" data-theme-name="documenter-dark" data-theme-primary-dark/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../assets/themes/documenter-light.css" data-theme-name="documenter-light" data-theme-primary/><script src="../assets/themeswap.js"></script><link href="../assets/custom.css" rel="stylesheet" type="text/css"/></head><body><div id="documenter"><nav class="docs-sidebar"><a class="docs-logo" href="../"><img class="docs-light-only" src="../assets/logo.svg" alt="BnB.jl logo"/><img class="docs-dark-only" src="../assets/logo-dark.svg" alt="BnB.jl logo"/></a><div class="docs-package-name"><span class="docs-autofit"><a href="../">BnB.jl</a></span></div><button class="docs-search-query input is-rounded is-small is-clickable my-2 mx-auto py-1 px-2" id="documenter-search-query">Search docs (Ctrl + /)</button><ul class="docs-menu"><li><a class="tocitem" href="../">Home</a></li><li class="is-active"><a class="tocitem" href>Examples</a><ul class="internal"><li><a class="tocitem" href="#Example-1:-Binary-Knapsack-Problem"><span>Example 1: Binary Knapsack Problem</span></a></li><li><a class="tocitem" href="#Example-2:-Travelling-Salesman-Problem"><span>Example 2: Travelling Salesman Problem</span></a></li><li><a class="tocitem" href="#Example-3:-Maximum-Independent-Set-Problem"><span>Example 3: Maximum Independent Set Problem</span></a></li></ul></li><li><a class="tocitem" href="../api/">API</a></li></ul><div class="docs-version-selector field has-addons"><div class="control"><span class="docs-label button is-static is-size-7">Version</span></div><div class="docs-selector control is-expanded"><div class="select is-fullwidth is-size-7"><select id="documenter-version-selector"></select></div></div></div></nav><div class="docs-main"><header class="docs-navbar"><a class="docs-sidebar-button docs-navbar-link fa-solid fa-bars is-hidden-desktop" id="documenter-sidebar-button" href="#"></a><nav class="breadcrumb"><ul class="is-hidden-mobile"><li class="is-active"><a href>Examples</a></li></ul><ul class="is-hidden-tablet"><li class="is-active"><a href>Examples</a></li></ul></nav><div class="docs-right"><a class="docs-navbar-link" href="https://github.com/Luiz-Lorena/BnB.jl" title="View the repository on GitHub"><span class="docs-icon fa-brands"></span><span class="docs-label is-hidden-touch">GitHub</span></a><a class="docs-navbar-link" href="https://github.com/Luiz-Lorena/BnB.jl/blob/main/docs/src/examples.md" title="Edit source on GitHub"><span class="docs-icon fa-solid"></span></a><a class="docs-settings-button docs-navbar-link fa-solid fa-gear" id="documenter-settings-button" href="#" title="Settings"></a><a class="docs-article-toggle-button fa-solid fa-chevron-up" id="documenter-article-toggle-button" href="javascript:;" title="Collapse all docstrings"></a></div></header><article class="content" id="documenter-page"><h1 id="Examples"><a class="docs-heading-anchor" href="#Examples">Examples</a><a id="Examples-1"></a><a class="docs-heading-anchor-permalink" href="#Examples" title="Permalink"></a></h1><p>This page collects complete usage examples for <code>BnB.jl</code>.</p><h2 id="Example-1:-Binary-Knapsack-Problem"><a class="docs-heading-anchor" href="#Example-1:-Binary-Knapsack-Problem">Example 1: Binary Knapsack Problem</a><a id="Example-1:-Binary-Knapsack-Problem-1"></a><a class="docs-heading-anchor-permalink" href="#Example-1:-Binary-Knapsack-Problem" title="Permalink"></a></h2><p>The following example solves the Binary Knapsack Problem (BKP) using Linear Programming relaxation in each node.</p><h3 id="What-this-example-does"><a class="docs-heading-anchor" href="#What-this-example-does">What this example does</a><a id="What-this-example-does-1"></a><a class="docs-heading-anchor-permalink" href="#What-this-example-does" title="Permalink"></a></h3><p>The BKP instance is a small binary knapsack problem:</p><ul><li>each item has a value <code>v = [4, 2, 10, 2, 1]</code></li><li>each item has a weight <code>w = [12, 2, 4, 1, 1]</code></li><li>the knapsack capacity is <code>W = 14</code></li></ul><p>The goal is to maximize total value without exceeding the capacity.</p><pre><code class="language-julia hljs">using BnB   # Branch-and-Bound framework
+<html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>Examples · BnB.jl</title><meta name="title" content="Examples · BnB.jl"/><meta property="og:title" content="Examples · BnB.jl"/><meta property="twitter:title" content="Examples · BnB.jl"/><meta name="description" content="Documentation for BnB.jl."/><meta property="og:description" content="Documentation for BnB.jl."/><meta property="twitter:description" content="Documentation for BnB.jl."/><script data-outdated-warner src="../assets/warner.js"></script><link href="https://cdnjs.cloudflare.com/ajax/libs/lato-font/3.0.0/css/lato-font.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/juliamono/0.050/juliamono.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/fontawesome.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/solid.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/brands.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.8/katex.min.css" rel="stylesheet" type="text/css"/><script>documenterBaseURL=".."</script><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" data-main="../assets/documenter.js"></script><script src="../search_index.js"></script><script src="../siteinfo.js"></script><script src="../../versions.js"></script><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../assets/themes/catppuccin-mocha.css" data-theme-name="catppuccin-mocha"/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../assets/themes/catppuccin-macchiato.css" data-theme-name="catppuccin-macchiato"/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../assets/themes/catppuccin-frappe.css" data-theme-name="catppuccin-frappe"/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../assets/themes/catppuccin-latte.css" data-theme-name="catppuccin-latte"/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../assets/themes/documenter-dark.css" data-theme-name="documenter-dark" data-theme-primary-dark/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../assets/themes/documenter-light.css" data-theme-name="documenter-light" data-theme-primary/><script src="../assets/themeswap.js"></script><link href="../assets/custom.css" rel="stylesheet" type="text/css"/></head><body><div id="documenter"><nav class="docs-sidebar"><a class="docs-logo" href="../"><img class="docs-light-only" src="../assets/logo.svg" alt="BnB.jl logo"/><img class="docs-dark-only" src="../assets/logo-dark.svg" alt="BnB.jl logo"/></a><div class="docs-package-name"><span class="docs-autofit"><a href="../">BnB.jl</a></span></div><button class="docs-search-query input is-rounded is-small is-clickable my-2 mx-auto py-1 px-2" id="documenter-search-query">Search docs (Ctrl + /)</button><ul class="docs-menu"><li><a class="tocitem" href="../">Home</a></li><li class="is-active"><a class="tocitem" href>Examples</a><ul class="internal"><li><a class="tocitem" href="#Example-1:-Binary-Knapsack-Problem"><span>Example 1: Binary Knapsack Problem</span></a></li><li><a class="tocitem" href="#Example-2:-Travelling-Salesman-Problem"><span>Example 2: Travelling Salesman Problem</span></a></li><li><a class="tocitem" href="#Example-3:-Maximum-Independent-Set-Problem"><span>Example 3: Maximum Independent Set Problem</span></a></li></ul></li><li><a class="tocitem" href="../api/">API</a></li></ul><div class="docs-version-selector field has-addons"><div class="control"><span class="docs-label button is-static is-size-7">Version</span></div><div class="docs-selector control is-expanded"><div class="select is-fullwidth is-size-7"><select id="documenter-version-selector"></select></div></div></div></nav><div class="docs-main"><header class="docs-navbar"><a class="docs-sidebar-button docs-navbar-link fa-solid fa-bars is-hidden-desktop" id="documenter-sidebar-button" href="#"></a><nav class="breadcrumb"><ul class="is-hidden-mobile"><li class="is-active"><a href>Examples</a></li></ul><ul class="is-hidden-tablet"><li class="is-active"><a href>Examples</a></li></ul></nav><div class="docs-right"><a class="docs-navbar-link" href="https://github.com/Luiz-Lorena/BnB.jl" title="View the repository on GitHub"><span class="docs-icon fa-brands"></span><span class="docs-label is-hidden-touch">GitHub</span></a><a class="docs-navbar-link" href="https://github.com/Luiz-Lorena/BnB.jl/blob/main/docs/src/examples.md" title="Edit source on GitHub"><span class="docs-icon fa-solid"></span></a><a class="docs-settings-button docs-navbar-link fa-solid fa-gear" id="documenter-settings-button" href="#" title="Settings"></a><a class="docs-article-toggle-button fa-solid fa-chevron-up" id="documenter-article-toggle-button" href="javascript:;" title="Collapse all docstrings"></a></div></header><article class="content" id="documenter-page"><h1 id="Examples"><a class="docs-heading-anchor" href="#Examples">Examples</a><a id="Examples-1"></a><a class="docs-heading-anchor-permalink" href="#Examples" title="Permalink"></a></h1><p>This page collects complete usage examples for <code>BnB.jl</code>.</p><h2 id="Example-1:-Binary-Knapsack-Problem"><a class="docs-heading-anchor" href="#Example-1:-Binary-Knapsack-Problem">Example 1: Binary Knapsack Problem</a><a id="Example-1:-Binary-Knapsack-Problem-1"></a><a class="docs-heading-anchor-permalink" href="#Example-1:-Binary-Knapsack-Problem" title="Permalink"></a></h2><p>The following example solves the Binary Knapsack Problem (BKP) using Linear Programming relaxation in each node.</p><h3 id="What-this-example-does"><a class="docs-heading-anchor" href="#What-this-example-does">What this example does</a><a id="What-this-example-does-1"></a><a class="docs-heading-anchor-permalink" href="#What-this-example-does" title="Permalink"></a></h3><p>The BKP instance is a small binary knapsack problem:</p><ul><li>each item has a value <code>v = [8, 16, 20, 12, 6, 10, 4]</code></li><li>each item has a weight <code>w = [3, 7, 9, 6, 3, 5, 2]</code></li><li>the knapsack capacity is <code>W = 17</code></li></ul><p>The goal is to maximize total value without exceeding the capacity.</p><pre><code class="language-julia hljs">using BnB   # BnB Framework
 using JuMP  # Modeling language
 using HiGHS # Solver
 
@@ -22,7 +22,7 @@ struct FixVariable &lt;: BnB.BnBBranchConstraint
 end
 
 # Function to find an initial incumbent solution using a greedy heuristic based on value-to-weight ratio
-function bkp_incumbent(data::BKPData)
+function BnB.custom_incumbent(data::BKPData)
     # Value-to-weight ratios
     ratios = data.v ./ data.w
     # Sort items by decreasing ratio
@@ -43,7 +43,7 @@ function bkp_incumbent(data::BKPData)
 end
 
 # Function to solve the LP relaxation of the BKP for a given node
-function bkp_relaxation(node::BnB.BnBNode, bnb::BnBCore)
+function BnB.custom_relaxation(node::BnB.BnBNode, bnb::BnB.BnBCore)
     model = JuMP.Model(HiGHS.Optimizer)
     JuMP.set_silent(model)
     @variable(model, 0 &lt;= x[i in 1:bnb.data.n] &lt;= 1)
@@ -60,7 +60,7 @@ function bkp_relaxation(node::BnB.BnBNode, bnb::BnBCore)
 end
 
 # Function to check pruning conditions for a given node and update its status accordingly
-function bkp_prune(node::BnB.BnBNode, bnb::BnBCore)
+function BnB.custom_prune(node::BnB.BnBNode, bnb::BnB.BnBCore)
     # 1. Prune by Infeasibility
     if isnothing(node.relaxation.solution)
         return BnB.PrunedByInfeasibility
@@ -77,7 +77,7 @@ function bkp_prune(node::BnB.BnBNode, bnb::BnBCore)
 end
 
 # Function to select the branches and the values to fix for a given node
-function bkp_branch(node::BnB.BnBNode, bnb::BnB.BnBCore)
+function BnB.custom_branch(node::BnB.BnBNode, bnb::BnB.BnBCore)
     # Create two branches: one excluding the edge and one including the edge
     branch_constraints = Vector{BnB.BnBBranchConstraint}()
     # Find all fractional variables in the solution
@@ -97,7 +97,7 @@ function bkp_branch(node::BnB.BnBNode, bnb::BnB.BnBCore)
 end
 
 # Function to determine if a node contains an optimal solution
-function bkp_is_optimal_solution(node::BnB.BnBNode, bnb::BnBCore)
+function BnB.custom_is_optimal_solution(node::BnB.BnBNode, bnb::BnB.BnBCore)
     # Check if the node has a valid solution
     if isnothing(node.relaxation.solution)
         return false
@@ -115,14 +115,14 @@ end
 
 # Example
 data = BKPData(
-    v = [4, 2, 10, 2, 1],
-    w = [12, 2, 4, 1, 1],
-    W = 15
+    v = [8, 16, 20, 12, 6, 10, 4],
+    w = [3, 7, 9, 6, 3, 5, 2],
+    W = 17
 )
 
 # Define plot options for this example
 custom_plot_options = BnB.BnBPlotOptions(
-    figure_size = (750, 400),
+    figure_size = (750, 650),
     node_size = (130, 90),
     node_label_size = 14,
     edge_label_size = 14,
@@ -132,14 +132,45 @@ custom_plot_options = BnB.BnBPlotOptions(
 )
 
 # Solve the BKP using the BnB framework
-solution = BnB.solve(data,
-                     is_maximization = true,
-                     custom_incumbent = bkp_incumbent,
-                     custom_relaxation = bkp_relaxation,        
-                     custom_prune = bkp_prune,
-                     custom_branch = bkp_branch,
-                     custom_is_optimal_solution = bkp_is_optimal_solution,
-                     custom_plot_options = custom_plot_options)</code></pre><h3 id="Step-by-step-walkthrough"><a class="docs-heading-anchor" href="#Step-by-step-walkthrough">Step-by-step walkthrough</a><a id="Step-by-step-walkthrough-1"></a><a class="docs-heading-anchor-permalink" href="#Step-by-step-walkthrough" title="Permalink"></a></h3><ol><li><code>BKPData</code> stores the problem data and precomputes <code>n</code>, the number of items.</li><li><code>bkp_incumbent</code> builds a fast initial feasible solution by sorting items by value-to-weight ratio and greedily filling the knapsack.</li><li><code>bkp_relaxation</code> solves the linear relaxation of the current node with JuMP and HiGHS, allowing fractional item values between 0 and 1.</li><li>The fixed variables in <code>node.fixed_variables</code> are applied as equality constraints so each branch inherits the decisions made higher in the tree.</li><li><code>bkp_prune</code> decides whether a node should be discarded because it is infeasible, cannot beat the incumbent bound, or is already integral.</li><li><code>bkp_branch_selection</code> picks the first fractional variable and branches on it.</li><li><code>bkp_is_optimal_node</code> checks whether the node is both integral and matches the current incumbent objective.</li><li><code>bkp_print_node</code> is a no-op hook, so the solver does not print per-node output.</li><li><code>BnB.solve</code> ties everything together by running branch-and-bound on the sample data with the custom callbacks.</li></ol><p>This example matches the integration test in the repository&#39;s test suite, which lives in the GitHub source tree.</p><h2 id="Example-2:-Travelling-Salesman-Problem"><a class="docs-heading-anchor" href="#Example-2:-Travelling-Salesman-Problem">Example 2: Travelling Salesman Problem</a><a id="Example-2:-Travelling-Salesman-Problem-1"></a><a class="docs-heading-anchor-permalink" href="#Example-2:-Travelling-Salesman-Problem" title="Permalink"></a></h2><p>The following example solves the Travelling Salesman Problem (TSP) using Linear Programming relaxation in each node.</p><h3 id="What-this-example-does-2"><a class="docs-heading-anchor" href="#What-this-example-does-2">What this example does</a><a class="docs-heading-anchor-permalink" href="#What-this-example-does-2" title="Permalink"></a></h3><p>The TSP instance file is composed by 7 cities:</p><p class="math-container">\[coordinates = \begin{bmatrix}
+solution = BnB.solve(data, is_maximization = true, search_strategy = :best_bound, custom_plot_options = custom_plot_options)</code></pre><p>The following output presents the result after executing the presented julia code.</p><pre><code class="nohighlight hljs">========== Branch-and-Bound Completed ==========
+
+Total time: 0.04331803321838379 seconds
+Best solution: [1.0, -0.0, 1.0, 0.0, 0.0, 1.0, -0.0]
+Objective value: 38.0
+
+Nodes explored: 13
+Nodes pruned: 6
+Pruning statistics:
+	- Pruned by infeasibility: 2
+	- Pruned by integrality: 0
+	- Pruned by bound: 4
+
+=================================================
+Search Tree
+=================================================
+
+└── Node 1 (39.56) 
+    ├── Node 2 (38.0) 
+    │   ├── Node 8 (38.0) ✂️
+    │   └── Node 9 (38.0) 
+    │       ├── Node 12 (38.0) ✂️
+    │       └── Node 13 (36.86) ✂️
+    └── Node 3 (39.43) 
+        ├── Node 4 (38.0) ⭐
+        └── Node 5 (38.67) 
+            ├── Node 6 (38.0) 
+            │   ├── Node 10 (38.0) ✂️
+            │   └── Node 11 (-Inf) 🚫
+            └── Node 7 (-Inf) 🚫
+
+Legend:
+
+	🔒 : Pruned by Integrality
+	🚫 : Pruned by Infeasibility
+	✂️ : Pruned by Bound
+	⭐ : Optimal
+
+=================================================</code></pre><h3 id="Step-by-step-walkthrough"><a class="docs-heading-anchor" href="#Step-by-step-walkthrough">Step-by-step walkthrough</a><a id="Step-by-step-walkthrough-1"></a><a class="docs-heading-anchor-permalink" href="#Step-by-step-walkthrough" title="Permalink"></a></h3><ol><li><code>BKPData</code> stores the problem data and precomputes <code>n</code>, the number of items.</li><li><code>bkp_incumbent</code> builds a fast initial feasible solution by sorting items by value-to-weight ratio and greedily filling the knapsack.</li><li><code>bkp_relaxation</code> solves the linear relaxation of the current node with JuMP and HiGHS, allowing fractional item values between 0 and 1.</li><li>The fixed variables in <code>node.fixed_variables</code> are applied as equality constraints so each branch inherits the decisions made higher in the tree.</li><li><code>bkp_prune</code> decides whether a node should be discarded because it is infeasible, cannot beat the incumbent bound, or is already integral.</li><li><code>bkp_branch_selection</code> picks the first fractional variable and branches on it.</li><li><code>bkp_is_optimal_node</code> checks whether the node is both integral and matches the current incumbent objective.</li><li><code>bkp_print_node</code> is a no-op hook, so the solver does not print per-node output.</li><li><code>BnB.solve</code> ties everything together by running branch-and-bound on the sample data with the custom callbacks.</li></ol><p>This example matches the integration test in the repository&#39;s test suite, which lives in the GitHub source tree.</p><h2 id="Example-2:-Travelling-Salesman-Problem"><a class="docs-heading-anchor" href="#Example-2:-Travelling-Salesman-Problem">Example 2: Travelling Salesman Problem</a><a id="Example-2:-Travelling-Salesman-Problem-1"></a><a class="docs-heading-anchor-permalink" href="#Example-2:-Travelling-Salesman-Problem" title="Permalink"></a></h2><p>The following example solves the Travelling Salesman Problem (TSP) using Linear Programming relaxation in each node.</p><h3 id="What-this-example-does-2"><a class="docs-heading-anchor" href="#What-this-example-does-2">What this example does</a><a class="docs-heading-anchor-permalink" href="#What-this-example-does-2" title="Permalink"></a></h3><p>The TSP instance file is composed by 7 cities:</p><p class="math-container">\[coordinates = \begin{bmatrix}
 -23.2018 &amp; -45.9000 \\
 -23.1980 &amp; -45.8925 \\
 -23.1985 &amp; -45.9010 \\
@@ -472,4 +503,4 @@ solution = BnB.solve(data,
                      custom_prune = misp_prune,
                      custom_branch = misp_branch,
                      custom_is_optimal_solution = misp_is_optimal_solution,
-                     custom_plot_options = custom_plot_options)</code></pre></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../">« Home</a><a class="docs-footer-nextpage" href="../api/">API »</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="auto">Automatic (OS)</option><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option><option value="catppuccin-latte">catppuccin-latte</option><option value="catppuccin-frappe">catppuccin-frappe</option><option value="catppuccin-macchiato">catppuccin-macchiato</option><option value="catppuccin-mocha">catppuccin-mocha</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 1.17.0 on <span class="colophon-date" title="Thursday 25 June 2026 02:02">Thursday 25 June 2026</span>. Using Julia version 1.12.6.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
+                     custom_plot_options = custom_plot_options)</code></pre></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../">« Home</a><a class="docs-footer-nextpage" href="../api/">API »</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="auto">Automatic (OS)</option><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option><option value="catppuccin-latte">catppuccin-latte</option><option value="catppuccin-frappe">catppuccin-frappe</option><option value="catppuccin-macchiato">catppuccin-macchiato</option><option value="catppuccin-mocha">catppuccin-mocha</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 1.17.0 on <span class="colophon-date" title="Thursday 25 June 2026 02:20">Thursday 25 June 2026</span>. Using Julia version 1.12.6.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
