@@ -52,14 +52,14 @@ Pkg.add(url="https://github.com/Luiz-Lorena/BnB.jl")
 
 To use the framework:
 
-1. Create a problem data type inheriting from BnBData
-2. Create a branching constraint type inheriting from BnBBranchConstraint
+1. Create a problem data type inheriting from `BnBData`
+2. Create a branching constraint type inheriting from `BnBBranchConstraint`
 3. Implement the required callbacks
     - a. `custom_incumbent`: create initial incumbent generation 
     - b. `custom_relaxation`: solve the relaxation 
     - c. `custom_prune`: check pruning logic
     - d. `custom_branch`: create branches
     - e. `custom_is_optimal_solution`: utility to check for optimal solutions
-4. Call solve(...)
+4. Call `solve(...)`
 
 For a step-by-step walkthrough, see the Examples page in the documentation: https://luiz-lorena.github.io/BnB.jl/dev/examples/
