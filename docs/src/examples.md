@@ -197,22 +197,13 @@ Legend:
 =================================================
 ```
 
+The Julia code also provides the following Branch-and-Bound tree.
 
-
-
-### Step-by-step walkthrough
-
-1. `BKPData` stores the problem data and precomputes `n`, the number of items.
-2. `bkp_incumbent` builds a fast initial feasible solution by sorting items by value-to-weight ratio and greedily filling the knapsack.
-3. `bkp_relaxation` solves the linear relaxation of the current node with JuMP and HiGHS, allowing fractional item values between 0 and 1.
-4. The fixed variables in `node.fixed_variables` are applied as equality constraints so each branch inherits the decisions made higher in the tree.
-5. `bkp_prune` decides whether a node should be discarded because it is infeasible, cannot beat the incumbent bound, or is already integral.
-6. `bkp_branch_selection` picks the first fractional variable and branches on it.
-7. `bkp_is_optimal_node` checks whether the node is both integral and matches the current incumbent objective.
-8. `bkp_print_node` is a no-op hook, so the solver does not print per-node output.
-9. `BnB.solve` ties everything together by running branch-and-bound on the sample data with the custom callbacks.
-
-This example matches the integration test in the repository's test suite, which lives in the GitHub source tree.
+```@raw html
+<div style="text-align: center;">
+    <img src="assets/BKP.png" alt="BKP solution"/>
+</div>
+```
 
 ## Example 2: Travelling Salesman Problem
 
@@ -239,7 +230,7 @@ coordinates = \begin{bmatrix}
 The goal is to find the shortest possible route that allows a traveler to visit a set of cities exactly once and return to the starting city.
 
 ```julia
-using BnB       # Branch-and-Bound framework
+using BnB       # BnB Framework
 using JuMP      # Modeling language
 using HiGHS     # Solver
 using CSV       # Data handling
@@ -266,7 +257,7 @@ struct FixVariable <: BnB.BnBBranchConstraint
 end
 
 # Function to find an initial incumbent solution using the Nearest Neighbor heuristic
-function tsp_incumbent(data::TSPData)
+function BnB.custom_incumbent(data::TSPData)
     visited = falses(data.n)
     solution = zeros(Int, data.n)
     # Start from the first city
@@ -288,7 +279,7 @@ function tsp_incumbent(data::TSPData)
 end
 
 # Function to solve the LP relaxation of the TSP for a given node
-function tsp_relaxation(node::BnB.BnBNode, bnb::BnBCore)
+function BnB.custom_relaxation(node::BnB.BnBNode, bnb::BnB.BnBCore)
     model = JuMP.Model(HiGHS.Optimizer)
     JuMP.set_silent(model)
     @variable(model, x[i in 1:bnb.data.n, j in 1:bnb.data.n], Bin)
@@ -326,7 +317,7 @@ function tsp_relaxation(node::BnB.BnBNode, bnb::BnBCore)
 end
 
 # Function to check pruning conditions for a given node and update its status accordingly
-function tsp_prune(node::BnB.BnBNode, bnb::BnB.BnBCore)
+function BnB.custom_prune(node::BnB.BnBNode, bnb::BnB.BnBCore)
     # 1. Prune by Infeasibility
     if isnothing(node.relaxation.objective)
         return BnB.PrunedByInfeasibility
@@ -343,7 +334,7 @@ function tsp_prune(node::BnB.BnBNode, bnb::BnB.BnBCore)
 end
 
 # Function to select the branches and the values to fix for a given node
-function tsp_branch(node::BnB.BnBNode, bnb::BnB.BnBCore)
+function BnB.custom_branch(node::BnB.BnBNode, bnb::BnB.BnBCore)
     # Create two branches: one excluding the edge and one including the edge
     branch_constraints = Vector{BnB.BnBBranchConstraint}()
     # Sort cycles by length to prioritize branching on the smallest subtour
@@ -366,7 +357,7 @@ function tsp_branch(node::BnB.BnBNode, bnb::BnB.BnBCore)
 end
 
 # Function to determine if a node contains an optimal solution
-function tsp_is_optimal_solution(node::BnB.BnBNode, bnb::BnB.BnBCore)
+function BnB.custom_is_optimal_solution(node::BnB.BnBNode, bnb::BnB.BnBCore)
     # Check if the node has a valid solution
     if isnothing(node.relaxation.solution)
         return false
@@ -397,21 +388,121 @@ custom_plot_options = BnB.BnBPlotOptions(
 )
 
 # Solve the TSP using the BnB framework
-solution = BnB.solve(data,
-                     is_maximization = false,
-                     custom_incumbent = tsp_incumbent,
-                     custom_relaxation = tsp_relaxation,        
-                     custom_prune = tsp_prune,
-                     custom_branch = tsp_branch,
-                     custom_is_optimal_solution = tsp_is_optimal_solution,
-                     custom_plot_options = custom_plot_options)
+solution = BnB.solve(data, is_maximization = false, search_strategy = :best_bound, custom_plot_options = custom_plot_options)
+```
+
+The following output presents the result after executing the presented julia code.
+
+```
+========== Branch-and-Bound Completed ==========
+
+Total time: 0.26796483993530273 seconds
+Best solution: [[1, 6, 4, 2, 7, 3, 5]]
+Objective value: 2866.791690832384
+
+Nodes explored: 7
+Nodes pruned: 2
+Pruning statistics:
+	- Pruned by infeasibility: 0
+	- Pruned by integrality: 0
+	- Pruned by bound: 2
+
+=================================================
+Search Tree
+=================================================
+
+└── Node 1 (2196.5) 
+    ├── Node 2 (2838.7) 
+    │   ├── Node 4 (2866.79) ⭐
+    │   └── Node 5 (2868.28) ✂️
+    └── Node 3 (2838.7) 
+        ├── Node 6 (2868.28) ✂️
+        └── Node 7 (2866.79) ⭐
+
+Legend:
+
+	🔒 : Pruned by Integrality
+	🚫 : Pruned by Infeasibility
+	✂️ : Pruned by Bound
+	⭐ : Optimal
+
+=================================================
+```
+
+The Julia code also provides the following Branch-and-Bound tree.
+
+```@raw html
+<div style="text-align: center;">
+    <img src="assets/TSP-SOL.png" alt="TSP solution"/>
+</div>
 ```
 
 ## Example 3: Maximum Independent Set Problem
 
-The following example solves the Maximum Independent Set Problem (MISP) using Linear Programming relaxation in each node of the BnB tree.
+The following example solves the Maximum Independent Set Problem (MISP).
 
-### What this example does
+### Problem Definition
+
+Given an undirected graph $G=(V,E)$ composed of a set of $V$ vertices and $E$ edges, an **independent set** is a subset of vertices ($S \subseteq V$) such that no two vertices in ($S$) are adjacent. The goal is to find the largest independent set.
+
+This problem is defined by the following model, in which the objective if to maximize the number of selected vertices.
+
+```math
+\begin{aligned}
+\max \quad & \sum_{i \in V} x_i \\
+\text{s.t.} \quad & x_i + x_j \le 1, && \forall (i,j) \in E, && (1)\\
+                  & x_i \in \{0,1\}, && \forall i \in V && (2)
+\end{aligned}
+```
+
+The variables $x_i$ are defined for each vertex $i \in V$, and controls if it is selected to be part of the independent set or not. The constraints (1) defines, for every edge ($(i,j) \in E$), that at most one endpoint can belong to the independent set.
+
+### Solution
+
+In this example we implement a branch-and-cut, since the Linear Programming relaxation with only edge constraints is weak.
+
+For example, consider a triangle:
+
+```
+1
+|\
+| \
+2--3
+```
+
+Edge constraints are:
+
+```math
+\begin{aligned}
+x_1+x_2 \le 1
+x_1+x_3 \le 1
+x_2+x_3 \le 1
+\end{aligned}
+```
+
+The fractional solution $x_1=x_2=x_3=0.5$ is feasible with objective $1.5$. However, an independent set can contain only one vertex.
+
+To prevent this we use a separation heuristic that search for cliques in the graph and insert clique inequalities. Thus, for any clique ($C$):
+
+```math
+\begin{aligned}
+\sum_{v\in C} x_v \le 1
+\end{aligned}
+```
+
+For the triangle in our example:
+
+```math
+\begin{aligned}
+x_1+x_2+x_3 \le 1
+\end{aligned}
+```
+
+which cuts off the fractional solution.
+ 
+The logic to find the cliques in implemented in `find_violated_cliques_multi(...)` function.
+
+### Example
 
 The MISP instance is a graph: 
 
@@ -438,13 +529,14 @@ A = \begin{bmatrix}
 
 </div>
 
-The goal is to find the largest possible independent set (maximum cardinality) in the graph.
+The following code implements the Branch-and-Cut to solve the MISP.
 
 ```julia
-using BnB    # Branch-and-Bound framework
+using BnB    # BnB Framework
 using JuMP   # Modeling language
 using HiGHS  # Solver
 using Graphs # Graphs package
+using Random # For random shuffling in the heuristic
 
 # Structure to represent the MISP data
 struct MISPData <: BnB.BnBData
@@ -466,14 +558,13 @@ struct FixVariable <: BnB.BnBBranchConstraint
 end
 
 # Function to find an initial incumbent solution using a greedy heuristic
-function misp_incumbent(data::MISPData)
+function BnB.custom_incumbent(data::MISPData)
     graph = data.graph
-    n = data.n
     # Initialize the independent set and a set to track selected vertices
     independent_set = Set{Int}()
-    selected = falses(n)
+    selected = falses(data.n)
     # Iterate over vertices in order of degree (lowest degree first)
-    for v in sort(1:n, by=v -> Graphs.degree(graph, v))
+    for v in sort(1:data.n, by=v -> Graphs.degree(graph, v))
         if !selected[v]
             push!(independent_set, v)
             selected[v] = true
@@ -486,33 +577,71 @@ function misp_incumbent(data::MISPData)
     return BnB.BnBSolution(solution=independent_set, objective=length(independent_set))
 end
 
-# Function to solve the LP relaxation of the MISP for a given node
-function misp_relaxation(node::BnB.BnBNode, bnb::BnBCore)
+# A simple heuristic to find a violated clique inequalities
+function find_violated_cliques_multi(g, x; K=10)
+    n = nv(g)
+    cliques = Set{Set{Int}}()
+    base = filter(v -> x[v] > 1e-4, 1:n)
+    # Try multiple random orders to find different violated cliques
+    for seed in 1:K
+        # Random order of candidates to get different cliques in each iteration
+        candidates = copy(base)
+        shuffle!(candidates)
+        sort!(candidates, by=v->x[v], rev=true)
+        clique = Set{Int}()
+        weight = 0.0
+        for v in candidates
+            if all(u -> has_edge(g,u,v), clique)
+                push!(clique, v)
+                weight += x[v]
+            end
+        end
+        # Only consider cliques of size >= 3 that violate the inequality
+        if length(clique) >= 3 && weight > 1 + 1e-4
+            push!(cliques, clique)
+        end
+    end
+    return cliques
+end
+
+# Function to solve the relaxation of the MISP for a given node using Cutting Planes
+function BnB.custom_relaxation(node::BnB.BnBNode, bnb::BnB.BnBCore)
     # Create the model
     model = JuMP.Model(HiGHS.Optimizer)
     # Silent mode (solver output is not printed)
     JuMP.set_silent(model)
     # Define the decision variables
     @variable(model, 0 <= x[v in 1:bnb.data.n] <= 1)
-    # Objective function: maximize the total of selected vertices
+    # Objective function
     @objective(model, Max, sum(x[v] for v in 1:bnb.data.n))
-    # Independence constraint
+    # Base Independence constraint (Edge Constraints)
     for e in Graphs.edges(bnb.data.graph)
         @constraint(model, x[e.src] + x[e.dst] <= 1)
     end
-    # Add constraints for fixed variables
+    # Add constraints for fixed variables from the BnB node
     for branch in node.branch_constraints
         @constraint(model, x[branch.v] == branch.value)
     end
+    # Add cutting planes
+    for clique in bnb.global_cuts
+        @constraint(model, sum(x[v] for v in clique) <= 1)
+    end
     # Run the solver
     JuMP.optimize!(model)
+    # Check for violated clique constraints and add them to the global cut pool
+    violated_cliques = find_violated_cliques_multi(bnb.data.graph, JuMP.value.(x), K=20)
+    for violated_clique in violated_cliques
+        if !isempty(violated_clique) && !(violated_clique in bnb.global_cuts)
+            push!(bnb.global_cuts, violated_clique)
+        end
+    end
     if JuMP.termination_status(model) == JuMP.OPTIMAL
         return BnB.BnBSolution(solution=JuMP.value.(x), objective=JuMP.objective_value(model))
     end
 end
 
 # Function to check pruning conditions for a given node and update its status accordingly
-function misp_prune(node::BnB.BnBNode, bnb::BnB.BnBCore)
+function BnB.custom_prune(node::BnB.BnBNode, bnb::BnB.BnBCore)
     # 1. Prune by Infeasibility
     if isnothing(node.relaxation.solution)
         return BnB.PrunedByInfeasibility
@@ -529,7 +658,7 @@ function misp_prune(node::BnB.BnBNode, bnb::BnB.BnBCore)
 end
 
 # Function to select the branches and the values to fix for a given node
-function misp_branch(node::BnB.BnBNode, bnb::BnB.BnBCore)
+function BnB.custom_branch(node::BnB.BnBNode, bnb::BnB.BnBCore)
     # Create two branches: one excluding the edge and one including the edge
     branch_constraints = Vector{BnB.BnBBranchConstraint}()
     # Find all fractional variables in the solution
@@ -548,8 +677,8 @@ function misp_branch(node::BnB.BnBNode, bnb::BnB.BnBCore)
     end
 end
 
-# Function to determine if a node is optimal by checking if it has an integral solution and if its relaxation value matches the incumbent objective value
-function misp_is_optimal_solution(node::BnB.BnBNode, bnb::BnB.BnBCore)
+# Function to determine if a node contains an optimal solution
+function BnB.custom_is_optimal_solution(node::BnB.BnBNode, bnb::BnB.BnBCore)
     # Check if the node has a valid solution
     if isnothing(node.relaxation.solution)
         return false
@@ -571,7 +700,7 @@ data = MISPData(graph)
 
 # Define plot options for this example
 custom_plot_options = BnB.BnBPlotOptions(
-    figure_size = (950, 950),
+    figure_size = (750, 650),
     node_size = (95, 90),
     node_label_size = 14,
     edge_label_size = 14,
@@ -581,12 +710,60 @@ custom_plot_options = BnB.BnBPlotOptions(
 )
 
 # Solve the MISP using the BnB framework
-solution = BnB.solve(data,
-                     is_maximization = true,
-                     custom_incumbent = misp_incumbent,
-                     custom_relaxation = misp_relaxation,        
-                     custom_prune = misp_prune,
-                     custom_branch = misp_branch,
-                     custom_is_optimal_solution = misp_is_optimal_solution,
-                     custom_plot_options = custom_plot_options)
+Random.seed!(42) # Set a random seed for reproducibility
+solution = BnB.solve(data, is_maximization = true, search_strategy = :best_bound, custom_plot_options = custom_plot_options)
+```
+
+The following output presents the result after executing the presented julia code.
+
+```
+========== Branch-and-Bound Completed ==========
+
+Total time: 0.5505459308624268 seconds
+Best solution: Set([5, 3, 1])
+Objective value: 3.0
+
+Nodes explored: 13
+Nodes pruned: 0
+Pruning statistics:
+	- Pruned by infeasibility: 0
+	- Pruned by integrality: 0
+	- Pruned by bound: 0
+
+Cuts generated: 14
+
+=================================================
+Search Tree
+=================================================
+
+└── Node 1 (6.0) 
+    ├── Node 2 (3.83) 
+    │   ├── Node 4 (3.5) 
+    │   │   ├── Node 10 (3.5) 
+    │   │   │   ├── Node 12 (3.0) ⭐
+    │   │   │   └── Node 13 (3.0) ⭐
+    │   │   └── Node 11 (3.0) ⭐
+    │   └── Node 5 (3.5) 
+    │       ├── Node 8 (3.0) ⭐
+    │       └── Node 9 (3.0) ⭐
+    └── Node 3 (3.5) 
+        ├── Node 6 (3.0) ⭐
+        └── Node 7 (3.0) ⭐
+
+Legend:
+
+	🔒 : Pruned by Integrality
+	🚫 : Pruned by Infeasibility
+	✂️ : Pruned by Bound
+	⭐ : Optimal
+
+=================================================
+```
+
+The Julia code also provides the following Branch-and-Bound tree.
+
+```@raw html
+<div style="text-align: center;">
+    <img src="assets/MISP-SOL.png" alt="MISP solution"/>
+</div>
 ```
