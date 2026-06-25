@@ -2,6 +2,8 @@
 
 This page collects complete usage examples for `BnB.jl`.
 
+---
+
 ## Example 1: Binary Knapsack Problem
 
 The following example solves the Binary Knapsack Problem (BKP) using Linear Programming relaxation in each node.
@@ -204,6 +206,8 @@ The Julia code also provides the following Branch-and-Bound tree.
     <img src="assets/BKP.png" alt="BKP solution"/>
 </div>
 ```
+
+---
 
 ## Example 2: Travelling Salesman Problem
 
@@ -436,6 +440,8 @@ The Julia code also provides the following Branch-and-Bound tree.
     <img src="assets/TSP-SOL.png" alt="TSP solution"/>
 </div>
 ```
+
+---
 
 ## Example 3: Maximum Independent Set Problem
 

@@ -20,6 +20,8 @@ using Pkg
 Pkg.add(url="https://github.com/Luiz-Lorena/BnB.jl")
 ```
 
+---
+
 ## Quick Start
 
 Consider the Binary Knapsack Problem (BKP) using Linear Programming relaxation in each node. The BKP instance is a small binary knapsack problem:
