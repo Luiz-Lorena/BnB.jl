@@ -16,136 +16,50 @@
 
 ---
 
-BnB.jl is a lightweight, callback-driven branch-and-bound framework for binary optimization problems in Julia. It lets you plug in your own incumbent, relaxation, pruning, branching, and optimality checks while the package manages the search tree, node state, and solution tracking.
+# Introduction
 
-The package is organized around a small core API:
+`BnB.jl` provides a generic Branch-and-Bound framework for Julia.
 
-- `BnBData` for user-defined problem data
-- `BnBNode` for individual search nodes
-- `BnBCore` for the algorithm state
-- `solve` as the main entry point
+It provides the search-tree management, node selection strategies,
+visualization, and bookkeeping required for branch-and-bound algorithms.
+Users only need to implement problem-specific callbacks:
 
-Optional tree visualization is available through `GraphMakie` and `CairoMakie` when `print_tree = true`.
+- Initial incumbent generation
+- Relaxation solver
+- Pruning logic
+- Branching logic
+- Optimality detection
+
+The framework can be used for problems such as:
+
+- Binary Knapsack
+- Set Covering
+- Vehicle Routing
+- Integer Programming
+- Column Generation + Branch-and-Price
+- Branch-and-Cut
+
+---
 
 ## Installation
 
-Install the package from GitHub with Julia's package manager:
-
 ```julia
 using Pkg
-Pkg.add(url="https://github.com/Luiz-Lorena/BnB.jl")
+Pkg.add(url="https://github.com/yourname/BnB.jl")
 ```
 
-## BKP Example
+## Quick Start
 
-This BKP example solves a binary knapsack problem with custom branch-and-bound callbacks.
+To use the framework:
 
-```julia
-using BnB
-using JuMP
-using HiGHS
+1. Create a problem data type inheriting from BnBData
+2. Create a branching constraint type inheriting from BnBBranchConstraint
+3. Implement the required callbacks
+    - a. `custom_incumbent`: create initial incumbent generation 
+    - b. `custom_relaxation`: solve the relaxation 
+    - c. `custom_prune`: check pruning logic
+    - d. `custom_branch`: create branches
+    - e. `custom_is_optimal_solution`: utility to check for optimal solutions
+4. Call solve(...)
 
-struct BKPData <: BnB.BnBData
-  v::Vector{Int64}
-  w::Vector{Int64}
-  W::Int64
-  n::Int
-
-  function BKPData(; v::Vector{Int64}, w::Vector{Int64}, W::Int64)
-    return new(v, w, W, length(v))
-  end
-end
-
-function bkp_incumbent(data::BKPData)
-  ratios = data.v ./ data.w
-  order = sortperm(ratios, rev = true)
-
-  solution = zeros(Int, data.n)
-  remaining_capacity = data.W
-  incumbent_objective = 0.0
-
-  for i in order
-    if data.w[i] <= remaining_capacity
-      solution[i] = 1
-      remaining_capacity -= data.w[i]
-      incumbent_objective += data.v[i]
-    end
-  end
-
-  return solution, incumbent_objective
-end
-
-function bkp_relaxation(node::BnB.BnBNode, data::BKPData)
-  model = JuMP.Model(HiGHS.Optimizer)
-  JuMP.set_silent(model)
-
-  @variable(model, 0 <= x[i in 1:data.n] <= 1)
-  @objective(model, Max, sum(data.v[i] * x[i] for i in 1:data.n))
-  @constraint(model, sum(data.w[i] * x[i] for i in 1:data.n) <= data.W)
-
-  for (var_key, value) in node.fixed_variables
-    @constraint(model, x[var_key] == value)
-  end
-
-  JuMP.optimize!(model)
-
-  if termination_status(model) == JuMP.OPTIMAL
-    return JuMP.value.(x), JuMP.objective_value(model)
-  end
-
-  return nothing, nothing
-end
-
-function bkp_prune(bnb::BnB.BnBCore, node::BnB.BnBNode)
-  if isnothing(node.solution)
-    return BnB.PrunedByInfeasibility
-  end
-
-  if node.relaxation <= bnb.incumbent_objective
-    return BnB.PrunedByBound
-  end
-
-  if !any(x -> 1e-5 < x < (1 - 1e-5), node.solution)
-    return BnB.PrunedByIntegrality
-  end
-
-  return BnB.Active
-end
-
-function bkp_branch_selection(node::BnB.BnBNode)
-  return findfirst(x -> 1e-5 < x < (1 - 1e-5), node.solution)
-end
-
-function bkp_is_optimal_node(bnb::BnB.BnBCore, node::BnB.BnBNode)
-  if isnothing(node.solution)
-    return false
-  end
-
-  is_integral = !any(x -> 1e-5 < x < (1 - 1e-5), node.solution)
-  is_optimal = isapprox(node.relaxation, bnb.incumbent_objective; atol = 1e-6)
-
-  return is_integral && is_optimal
-end
-
-bkp_print_node(::BnB.BnBNode) = nothing
-
-data = BKPData(
-  v = [4, 2, 10, 2, 1],
-  w = [12, 2, 4, 1, 1],
-  W = 15,
-)
-
-BnB.solve(
-  data;
-  print_tree = false,
-  sense = BnB.Max,
-  custom_incumbent = bkp_incumbent,
-  custom_relaxation = bkp_relaxation,
-  custom_prune = bkp_prune,
-  custom_branch_selection = bkp_branch_selection,
-  custom_is_optimal_node = bkp_is_optimal_node,
-  custom_print_node = bkp_print_node,
-)
-```
-
-For a step-by-step walkthrough, see the Examples page in the documentation: https://luiz-lorena.github.io/BnB.jl/examples/
+For a step-by-step walkthrough, see the Examples page in the documentation: https://luiz-lorena.github.io/BnB.jl/dev/examples/
