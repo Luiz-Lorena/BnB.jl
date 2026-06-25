@@ -9,7 +9,7 @@
 </div><h1 id="Introduction"><a class="docs-heading-anchor" href="#Introduction">Introduction</a><a id="Introduction-1"></a><a class="docs-heading-anchor-permalink" href="#Introduction" title="Permalink"></a></h1><p><code>BnB.jl</code> provides a customizable branch-and-bound framework for binary decision problems.</p><h2 id="Installation"><a class="docs-heading-anchor" href="#Installation">Installation</a><a id="Installation-1"></a><a class="docs-heading-anchor-permalink" href="#Installation" title="Permalink"></a></h2><pre><code class="language-julia hljs">using Pkg
 Pkg.add(url=&quot;https://github.com/Luiz-Lorena/BnB.jl&quot;)</code></pre><h2 id="Quick-Start"><a class="docs-heading-anchor" href="#Quick-Start">Quick Start</a><a id="Quick-Start-1"></a><a class="docs-heading-anchor-permalink" href="#Quick-Start" title="Permalink"></a></h2><p>Consider the Binary Knapsack Problem (BKP) using Linear Programming relaxation in each node. The BKP instance is a small binary knapsack problem:</p><ul><li>each item has a value <code>v = [8, 16, 20, 12, 6, 10, 4]</code></li><li>each item has a weight <code>w = [3, 7, 9, 6, 3, 5, 2]</code></li><li>the knapsack capacity is <code>W = 17</code></li></ul><p>The goal is to maximize total value without exceeding the capacity.</p><h3 id="Step-1-Load-packages"><a class="docs-heading-anchor" href="#Step-1-Load-packages">Step 1 - Load packages</a><a id="Step-1-Load-packages-1"></a><a class="docs-heading-anchor-permalink" href="#Step-1-Load-packages" title="Permalink"></a></h3><p>The first step is to import the necessary packages.</p><pre><code class="language-julia hljs">using BnB   # BnB Framework
 using JuMP  # Modeling language
-using HiGHS # Solver</code></pre><h3 id="Step-2-Data-structure-for-the-problem"><a class="docs-heading-anchor" href="#Step-2-Data-structure-for-the-problem">Step 2 - Data structure for the problem</a><a id="Step-2-Data-structure-for-the-problem-1"></a><a class="docs-heading-anchor-permalink" href="#Step-2-Data-structure-for-the-problem" title="Permalink"></a></h3><p>Create a problem data type inheriting from <code>BnBData</code></p><pre><code class="language-julia hljs"># Structure to represent the BKP data
+using HiGHS # Solver</code></pre><h3 id="Step-2-Data-structure-for-the-problem"><a class="docs-heading-anchor" href="#Step-2-Data-structure-for-the-problem">Step 2 - Data structure for the problem</a><a id="Step-2-Data-structure-for-the-problem-1"></a><a class="docs-heading-anchor-permalink" href="#Step-2-Data-structure-for-the-problem" title="Permalink"></a></h3><p>Create a problem data type inheriting from <code>BnBData</code>.</p><pre><code class="language-julia hljs"># Structure to represent the BKP data
 struct BKPData &lt;: BnB.BnBData
     v::Vector{Int64} # values
     w::Vector{Int64} # weights
@@ -19,8 +19,145 @@ struct BKPData &lt;: BnB.BnBData
     function BKPData(;v::Vector{Int64}, w::Vector{Int64}, W::Int64)
         return new(v, w, W, length(v))
     end
-end</code></pre><h3 id="Step-3-Create-structure-to-represent-branch-constraints"><a class="docs-heading-anchor" href="#Step-3-Create-structure-to-represent-branch-constraints">Step 3 - Create structure to represent branch constraints</a><a id="Step-3-Create-structure-to-represent-branch-constraints-1"></a><a class="docs-heading-anchor-permalink" href="#Step-3-Create-structure-to-represent-branch-constraints" title="Permalink"></a></h3><pre><code class="language-julia hljs"># Structure to represent the branch constraint
+end</code></pre><h3 id="Step-3-Create-structure-to-represent-branch-constraints"><a class="docs-heading-anchor" href="#Step-3-Create-structure-to-represent-branch-constraints">Step 3 - Create structure to represent branch constraints</a><a id="Step-3-Create-structure-to-represent-branch-constraints-1"></a><a class="docs-heading-anchor-permalink" href="#Step-3-Create-structure-to-represent-branch-constraints" title="Permalink"></a></h3><p>For the BKP we branch by fixing variables.</p><pre><code class="language-julia hljs"># Structure to represent the branch constraint
 struct FixVariable &lt;: BnB.BnBBranchConstraint
     i::Int64     # Variable index
     value::Int64 # Value to fix
-end</code></pre><p>For a complete mixed-integer example using JuMP and HiGHS, see <a href="examples/#Examples">Examples</a>.</p></article><nav class="docs-footer"><a class="docs-footer-nextpage" href="examples/">Examples »</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="auto">Automatic (OS)</option><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option><option value="catppuccin-latte">catppuccin-latte</option><option value="catppuccin-frappe">catppuccin-frappe</option><option value="catppuccin-macchiato">catppuccin-macchiato</option><option value="catppuccin-mocha">catppuccin-mocha</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 1.17.0 on <span class="colophon-date" title="Thursday 25 June 2026 02:20">Thursday 25 June 2026</span>. Using Julia version 1.12.6.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
+end</code></pre><h3 id="Step-4-Implement-the-required-callbacks"><a class="docs-heading-anchor" href="#Step-4-Implement-the-required-callbacks">Step 4 - Implement the required callbacks</a><a id="Step-4-Implement-the-required-callbacks-1"></a><a class="docs-heading-anchor-permalink" href="#Step-4-Implement-the-required-callbacks" title="Permalink"></a></h3><h4 id="a.-Custom-function-to-create-incumbent-solution"><a class="docs-heading-anchor" href="#a.-Custom-function-to-create-incumbent-solution">a. Custom function to create incumbent solution</a><a id="a.-Custom-function-to-create-incumbent-solution-1"></a><a class="docs-heading-anchor-permalink" href="#a.-Custom-function-to-create-incumbent-solution" title="Permalink"></a></h4><p>For the BKP we use a greedy heuristic based on value-to-weight ratio.</p><pre><code class="language-julia hljs"># Function to find an initial incumbent solution using a greedy heuristic based on value-to-weight ratio
+function BnB.custom_incumbent(data::BKPData)
+    # Value-to-weight ratios
+    ratios = data.v ./ data.w
+    # Sort items by decreasing ratio
+    order = sortperm(ratios, rev=true)
+    # Initialize solution vector
+    solution = zeros(Int, data.n)
+    # Greedy filling based on sorted order
+    remaining_capacity = data.W
+    incumbent_objective = 0.0
+    for i in order
+        if data.w[i] &lt;= remaining_capacity
+            solution[i] = 1
+            remaining_capacity -= data.w[i]
+            incumbent_objective += data.v[i]
+        end
+    end
+    return BnB.BnBSolution(solution=solution, objective=incumbent_objective)
+end</code></pre><h4 id="b.-Custom-function-to-solve-the-relaxation"><a class="docs-heading-anchor" href="#b.-Custom-function-to-solve-the-relaxation">b. Custom function to solve the relaxation</a><a id="b.-Custom-function-to-solve-the-relaxation-1"></a><a class="docs-heading-anchor-permalink" href="#b.-Custom-function-to-solve-the-relaxation" title="Permalink"></a></h4><p>We solve the LP relaxation of the BKP at each node adding constraints for the fixing variables. </p><pre><code class="language-julia hljs"># Function to solve the LP relaxation of the BKP for a given node
+function BnB.custom_relaxation(node::BnB.BnBNode, bnb::BnB.BnBCore)
+    model = JuMP.Model(HiGHS.Optimizer)
+    JuMP.set_silent(model)
+    @variable(model, 0 &lt;= x[i in 1:bnb.data.n] &lt;= 1)
+    @objective(model, Max, sum(bnb.data.v[i] * x[i] for i in 1:bnb.data.n))
+    @constraint(model, sum(bnb.data.w[i] * x[i] for i in 1:bnb.data.n) &lt;= bnb.data.W)
+    # Add constraints for fixed variables
+    for branch in node.branch_constraints
+        @constraint(model, x[branch.i] == branch.value)
+    end
+    JuMP.optimize!(model)
+    if JuMP.termination_status(model) == JuMP.OPTIMAL
+        return BnB.BnBSolution(solution=JuMP.value.(x), objective=JuMP.objective_value(model))
+    end
+end</code></pre><h4 id="c.-Custom-function-to-check-pruning-status"><a class="docs-heading-anchor" href="#c.-Custom-function-to-check-pruning-status">c. Custom function to check pruning status</a><a id="c.-Custom-function-to-check-pruning-status-1"></a><a class="docs-heading-anchor-permalink" href="#c.-Custom-function-to-check-pruning-status" title="Permalink"></a></h4><p>Function that checks the solution and returns the pruning status.</p><pre><code class="language-julia hljs"># Function to check pruning conditions for a given node and update its status accordingly
+function BnB.custom_prune(node::BnB.BnBNode, bnb::BnB.BnBCore)
+    # 1. Prune by Infeasibility
+    if isnothing(node.relaxation.solution)
+        return BnB.PrunedByInfeasibility
+    end
+    # 2. Prune by Integrality
+    if !any(x -&gt; 1e-5 &lt; x &lt; (1 - 1e-5), node.relaxation.solution)
+        return BnB.PrunedByIntegrality
+    end
+    # 3. Prune by Bound
+    if node.relaxation.objective &lt;= bnb.incumbent.objective
+        return BnB.PrunedByBound
+    end
+    return BnB.Active
+end</code></pre><h4 id="d.-Custom-function-to-create-the-branches"><a class="docs-heading-anchor" href="#d.-Custom-function-to-create-the-branches">d. Custom function to create the branches</a><a id="d.-Custom-function-to-create-the-branches-1"></a><a class="docs-heading-anchor-permalink" href="#d.-Custom-function-to-create-the-branches" title="Permalink"></a></h4><p>We create branches by finding fractional variables of a solution.</p><pre><code class="language-julia hljs"># Function to select the branches and the values to fix for a given node
+function BnB.custom_branch(node::BnB.BnBNode, bnb::BnB.BnBCore)
+    # Create two branches: one excluding the edge and one including the edge
+    branch_constraints = Vector{BnB.BnBBranchConstraint}()
+    # Find all fractional variables in the solution
+    fractional_variables = findall(x -&gt; 1e-5 &lt; x &lt; (1 - 1e-5), node.relaxation.solution)
+    # Create branches
+    for var in fractional_variables
+        left_branch = FixVariable(var, 0)
+        right_branch = FixVariable(var, 1)
+        # Check if the variable is already fixed to 0.0 in the current node
+        if left_branch in node.branch_constraints || right_branch in node.branch_constraints
+            continue
+        end
+        push!(branch_constraints, left_branch)  # Left branch: exclude the item
+        push!(branch_constraints, right_branch) # Right branch: include the item
+        return branch_constraints
+    end
+end</code></pre><h4 id="e.-Custom-function-to-check-if-the-solution-is-optimal"><a class="docs-heading-anchor" href="#e.-Custom-function-to-check-if-the-solution-is-optimal">e. Custom function to check if the solution is optimal</a><a id="e.-Custom-function-to-check-if-the-solution-is-optimal-1"></a><a class="docs-heading-anchor-permalink" href="#e.-Custom-function-to-check-if-the-solution-is-optimal" title="Permalink"></a></h4><p>Checks if the solution is valid, integral and is within a tolerance to be considered optimal.</p><pre><code class="language-julia hljs"># Function to determine if a node contains an optimal solution
+function BnB.custom_is_optimal_solution(node::BnB.BnBNode, bnb::BnB.BnBCore)
+    # Check if the node has a valid solution
+    if isnothing(node.relaxation.solution)
+        return false
+    end
+    # Check if the solution is integral (i.e., all variables are either 0 or 1)
+    is_integral = !any(x -&gt; 1e-5 &lt; x &lt; (1 - 1e-5), node.relaxation.solution)
+    # Check if the relaxation value matches the best incumbent objective value within a tolerance
+    is_optimal = isapprox(node.relaxation.objective, bnb.incumbent.objective; atol=1e-6)
+    # It is optimal if it has an integral solution and its relaxation value matches the incumbent objective value
+    if is_integral &amp;&amp; is_optimal
+        return true
+    end
+    return false
+end</code></pre><h3 id="Step-5-Solve"><a class="docs-heading-anchor" href="#Step-5-Solve">Step 5 - Solve</a><a id="Step-5-Solve-1"></a><a class="docs-heading-anchor-permalink" href="#Step-5-Solve" title="Permalink"></a></h3><h4 id="a.-Load-problem-data"><a class="docs-heading-anchor" href="#a.-Load-problem-data">a. Load problem data</a><a id="a.-Load-problem-data-1"></a><a class="docs-heading-anchor-permalink" href="#a.-Load-problem-data" title="Permalink"></a></h4><p>We create an instance of the problem structure.</p><pre><code class="language-julia hljs"># Example
+data = BKPData(
+    v = [8, 16, 20, 12, 6, 10, 4],
+    w = [3, 7, 9, 6, 3, 5, 2],
+    W = 17
+)</code></pre><h4 id="b.-Customize-the-plot-options"><a class="docs-heading-anchor" href="#b.-Customize-the-plot-options">b. Customize the plot options</a><a id="b.-Customize-the-plot-options-1"></a><a class="docs-heading-anchor-permalink" href="#b.-Customize-the-plot-options" title="Permalink"></a></h4><p>Define plot options for the Branch-and-Bound tree figure. The <code>branch_label</code> option, for instance, defines the edge&#39;s label.</p><pre><code class="language-julia hljs"># Define plot options for this example
+custom_plot_options = BnB.BnBPlotOptions(
+    figure_size = (750, 650),
+    node_size = (130, 90),
+    node_label_size = 14,
+    edge_label_size = 14,
+    show_legend = true,
+    legend_position = :bottom,
+    branch_label = (branch::FixVariable) -&gt; &quot;x[$(branch.i)] = $(branch.value)&quot;
+)</code></pre><h4 id="c.-Call-the-solve"><a class="docs-heading-anchor" href="#c.-Call-the-solve">c. Call the solve</a><a id="c.-Call-the-solve-1"></a><a class="docs-heading-anchor-permalink" href="#c.-Call-the-solve" title="Permalink"></a></h4><p>The last step is to call the <code>solve</code> function to execute the Branch-and-Bound algorithm. Defining the problem as maximization, the search strategy, and the plot options.</p><pre><code class="language-julia hljs"># Solve the BKP using the BnB framework
+solution = BnB.solve(data, is_maximization = true, search_strategy = :best_bound, custom_plot_options = custom_plot_options)</code></pre><h3 id="Results"><a class="docs-heading-anchor" href="#Results">Results</a><a id="Results-1"></a><a class="docs-heading-anchor-permalink" href="#Results" title="Permalink"></a></h3><p>The solve function will provide the best solution found, display a summary of the Branch-and-Bound process, and a figure representing the BnB tree.</p><pre><code class="nohighlight hljs">========== Branch-and-Bound Completed ==========
+
+Total time: 0.04331803321838379 seconds
+Best solution: [1.0, -0.0, 1.0, 0.0, 0.0, 1.0, -0.0]
+Objective value: 38.0
+
+Nodes explored: 13
+Nodes pruned: 6
+Pruning statistics:
+	- Pruned by infeasibility: 2
+	- Pruned by integrality: 0
+	- Pruned by bound: 4
+
+=================================================
+Search Tree
+=================================================
+
+└── Node 1 (39.56) 
+    ├── Node 2 (38.0) 
+    │   ├── Node 8 (38.0) ✂️
+    │   └── Node 9 (38.0) 
+    │       ├── Node 12 (38.0) ✂️
+    │       └── Node 13 (36.86) ✂️
+    └── Node 3 (39.43) 
+        ├── Node 4 (38.0) ⭐
+        └── Node 5 (38.67) 
+            ├── Node 6 (38.0) 
+            │   ├── Node 10 (38.0) ✂️
+            │   └── Node 11 (-Inf) 🚫
+            └── Node 7 (-Inf) 🚫
+
+Legend:
+
+	🔒 : Pruned by Integrality
+	🚫 : Pruned by Infeasibility
+	✂️ : Pruned by Bound
+	⭐ : Optimal
+
+=================================================</code></pre><div style="text-align: center;">
+    <img src="assets/BKP.png" alt="BKP solution"/>
+</div><p>For other examples see <a href="examples/#Examples">Examples</a>.</p></article><nav class="docs-footer"><a class="docs-footer-nextpage" href="examples/">Examples »</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="auto">Automatic (OS)</option><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option><option value="catppuccin-latte">catppuccin-latte</option><option value="catppuccin-frappe">catppuccin-frappe</option><option value="catppuccin-macchiato">catppuccin-macchiato</option><option value="catppuccin-mocha">catppuccin-mocha</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 1.17.0 on <span class="colophon-date" title="Thursday 25 June 2026 04:10">Thursday 25 June 2026</span>. Using Julia version 1.12.6.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
