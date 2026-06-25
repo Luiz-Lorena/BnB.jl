@@ -39,6 +39,7 @@ The framework can be used for problems such as:
 ```julia
 using Pkg
 Pkg.add(url="https://github.com/yourname/BnB.jl")
+```
 
 ## Quick Start
 
@@ -53,3 +54,5 @@ To use the framework:
     - d. `custom_branch`: create branches
     - e. `custom_is_optimal_solution`: utility to check for optimal solutions
 4. Call solve(...)
+
+For a complete mixed-integer example using JuMP and HiGHS, see [Examples](@ref).
