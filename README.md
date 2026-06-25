@@ -32,12 +32,9 @@ Users only need to implement problem-specific callbacks:
 
 The framework can be used for problems such as:
 
-- Binary Knapsack
-- Set Covering
-- Vehicle Routing
-- Integer Programming
-- Column Generation + Branch-and-Price
-- Branch-and-Cut
+- Knapsack Problems
+- Traveling Salesman Problem
+- Maximum Independent Set Problem
 
 ---
 

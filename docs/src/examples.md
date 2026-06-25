@@ -504,9 +504,7 @@ x_1+x_2+x_3 \le 1
 \end{aligned}
 ```
 
-which cuts off the fractional solution.
- 
-The logic to find the cliques in implemented in `find_violated_cliques_multi(...)` function.
+which cuts off the fractional solution. The logic to find the cliques in implemented in `find_violated_cliques_multi(...)` function.
 
 ### Example
 

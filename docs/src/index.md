@@ -11,7 +11,7 @@
 
 # Introduction
 
-`BnB.jl` provides a customizable branch-and-bound framework for binary decision problems.
+`BnB.jl` provides a customizable branch-and-bound framework.
 
 ## Installation
 
