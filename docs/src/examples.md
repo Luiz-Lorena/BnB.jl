@@ -518,11 +518,13 @@ A = \begin{bmatrix}
 1 & 0 & 0 & 0 & 1 & 1 & 0 & 1 & 0 & 0 & 1 & 0
 \end{bmatrix}
 ```
-<p align="center">
 
-![MISP instance](assets/MISP.png)
+```@raw html
+<div style="text-align: center;">
+    <img src="assets/MISP.png" alt="MISP instance"/>
+</div>
+```
 
-</p>
 
 The following code implements the Branch-and-Cut to solve the MISP.
 
