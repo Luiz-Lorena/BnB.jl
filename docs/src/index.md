@@ -285,7 +285,7 @@ Legend:
 
 ```@raw html
 <div style="text-align: center;">
-    <img src="assets/BKP.png" alt="BKP solution"/>
+    <img src="assets/BKP-SOL.png" alt="BKP solution"/>
 </div>
 ```
 
