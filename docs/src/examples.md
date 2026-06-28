@@ -201,7 +201,7 @@ Legend:
 
 The Julia code also provides the following Branch-and-Bound tree.
 
-![Branch-and-Bound tree for BKP.](assets/BKP-SOL.pdf)
+![Branch-and-Bound tree for BKP.](assets/BKP-SOL.png)
 
 ---
 
@@ -431,7 +431,7 @@ Legend:
 
 The Julia code also provides the following Branch-and-Bound tree.
 
-![Branch-and-Bound tree for TSP.](assets/TSP-SOL.pdf)
+![Branch-and-Bound tree for TSP.](assets/TSP-SOL.png)
 
 ---
 
@@ -754,4 +754,4 @@ Legend:
 
 The Julia code also provides the following Branch-and-Bound tree.
 
-![Branch-and-Cut tree for MISP.](assets/MISP-SOL.pdf)
+![Branch-and-Cut tree for MISP.](assets/MISP-SOL.png)
