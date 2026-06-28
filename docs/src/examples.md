@@ -201,7 +201,7 @@ Legend:
 
 The Julia code also provides the following Branch-and-Bound tree.
 
-![Branch-and-Bound tree for BKP.](assets/BKP.png)
+![Branch-and-Bound tree for BKP.](assets/BKP-SOL.pdf)
 
 ---
 
@@ -431,13 +431,7 @@ Legend:
 
 The Julia code also provides the following Branch-and-Bound tree.
 
-```@raw html
-<div style="text-align: center;">
-    <img src="assets/TSP-SOL.png" alt="TSP solution"/>
-</div>
-```
-
-![Branch-and-Bound tree for TSP.](assets/TSP-SOL.png)
+![Branch-and-Bound tree for TSP.](assets/TSP-SOL.pdf)
 
 ---
 
@@ -478,8 +472,8 @@ Edge constraints are:
 
 ```math
 \begin{aligned}
-x_1+x_2 \le 1
-x_1+x_3 \le 1
+x_1+x_2 \le 1 \\
+x_1+x_3 \le 1 \\
 x_2+x_3 \le 1
 \end{aligned}
 ```
@@ -760,4 +754,4 @@ Legend:
 
 The Julia code also provides the following Branch-and-Bound tree.
 
-![Branch-and-Cut tree for MISP.](assets/MISP-SOL.png)
+![Branch-and-Cut tree for MISP.](assets/MISP-SOL.pdf)
