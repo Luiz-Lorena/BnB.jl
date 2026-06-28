@@ -201,11 +201,7 @@ Legend:
 
 The Julia code also provides the following Branch-and-Bound tree.
 
-```@raw html
-<div style="text-align: center;">
-    <img src="assets/BKP.png" alt="BKP solution"/>
-</div>
-```
+![Branch-and-Bound tree for BKP.](assets/BKP.png)
 
 ---
 
@@ -441,6 +437,8 @@ The Julia code also provides the following Branch-and-Bound tree.
 </div>
 ```
 
+![Branch-and-Bound tree for TSP.](assets/TSP-SOL.png)
+
 ---
 
 ## Example 3: Maximum Independent Set Problem
@@ -527,13 +525,7 @@ A = \begin{bmatrix}
 \end{bmatrix}
 ```
 
-```@raw html
-<div align="center">
-
 ![MISP instance](assets/MISP.png)
-
-</div>
-```
 
 The following code implements the Branch-and-Cut to solve the MISP.
 
@@ -768,8 +760,4 @@ Legend:
 
 The Julia code also provides the following Branch-and-Bound tree.
 
-```@raw html
-<div style="text-align: center;">
-    <img src="assets/MISP-SOL.png" alt="MISP solution"/>
-</div>
-```
+![Branch-and-Cut tree for MISP.](assets/MISP-SOL.png)
