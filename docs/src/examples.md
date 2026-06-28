@@ -521,10 +521,9 @@ A = \begin{bmatrix}
 
 ```@raw html
 <div style="text-align: center;">
-    <img src="assets/MISP.png" alt="MISP instance"/>
+    <img src="../assets/MISP.png" alt="MISP instance"/>
 </div>
 ```
-
 
 The following code implements the Branch-and-Cut to solve the MISP.
 
