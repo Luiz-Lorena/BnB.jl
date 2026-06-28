@@ -527,11 +527,13 @@ A = \begin{bmatrix}
 \end{bmatrix}
 ```
 
+```@raw html
 <div align="center">
 
 ![MISP instance](assets/MISP.png)
 
 </div>
+```
 
 The following code implements the Branch-and-Cut to solve the MISP.
 

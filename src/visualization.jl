@@ -194,7 +194,7 @@ function plot_bnb_tree(bnb::BnBCore; plot_options::BnBPlotOptions = BnBPlotOptio
             f[1, 2] = legend
         end
     end
-
+    
     # Finalize layout and display the plot
     display(f)
 end
