@@ -1,5 +1,7 @@
 # BnB.jl
 
+BnB.jl provides a generic Branch-and-Bound framework for Julia.
+
 <p align="center">
   <picture>
     <source media="(prefers-color-scheme: light)" srcset="assets/logo-with-text.svg">
@@ -18,9 +20,7 @@
 
 # Introduction
 
-`BnB.jl` provides a generic Branch-and-Bound framework for Julia.
-
-It provides the search-tree management, node selection strategies,
+`BnB.jl` provides the search-tree management, node selection strategies,
 visualization, and bookkeeping required for branch-and-bound algorithms.
 Users only need to implement problem-specific callbacks:
 
